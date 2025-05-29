@@ -9,8 +9,8 @@ import java.util.List;
 
 public class UtenteDAO {
 
-    //Aggiunta utente
-    public boolean create(Utente utente) {
+    // Salvataggio utente (equivalente a create)
+    public boolean doSave(Utente utente) {
         String sql = "INSERT INTO Utenti (nome, email, passw, ruolo, iscrizione_newsletter) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -29,8 +29,8 @@ public class UtenteDAO {
         return false;
     }
 
-    //Ricerca utente per ID
-    public Utente findById(int id) {
+    // Recupero utente per ID
+    public Utente doRetrieveByKey(int id) {
         String sql = "SELECT * FROM Utenti WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -39,7 +39,14 @@ public class UtenteDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return mappaUtente(rs);
+                Utente u = new Utente();
+                u.setId(rs.getInt("id"));
+                u.setNome(rs.getString("nome"));
+                u.setEmail(rs.getString("email"));
+                u.setPassword(rs.getString("passw"));
+                u.setRuolo(rs.getString("ruolo"));
+                u.setIscrizioneNewsletter(rs.getBoolean("iscrizione_newsletter"));
+                return u;
             }
 
         } catch (SQLException e) {
@@ -48,8 +55,8 @@ public class UtenteDAO {
         return null;
     }
 
-    //Login
-    public Utente checkLogin(String email, String password) {
+    // Recupero utente per email e password (Login)
+    public Utente doRetrieveByCredentials(String email, String password) {
         String sql = "SELECT * FROM Utenti WHERE email = ? AND passw = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -59,7 +66,14 @@ public class UtenteDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return mappaUtente(rs);
+                Utente u = new Utente();
+                u.setId(rs.getInt("id"));
+                u.setNome(rs.getString("nome"));
+                u.setEmail(rs.getString("email"));
+                u.setPassword(rs.getString("passw"));
+                u.setRuolo(rs.getString("ruolo"));
+                u.setIscrizioneNewsletter(rs.getBoolean("iscrizione_newsletter"));
+                return u;
             }
 
         } catch (SQLException e) {
@@ -68,8 +82,8 @@ public class UtenteDAO {
         return null;
     }
 
-    //Lista di tutti gli utenti
-    public List<Utente> findAll() {
+    // Recupero di tutti gli utenti
+    public List<Utente> doRetrieveAll() {
         List<Utente> lista = new ArrayList<>();
         String sql = "SELECT * FROM Utenti";
 
@@ -78,7 +92,14 @@ public class UtenteDAO {
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                lista.add(mappaUtente(rs));
+                Utente u = new Utente();
+                u.setId(rs.getInt("id"));
+                u.setNome(rs.getString("nome"));
+                u.setEmail(rs.getString("email"));
+                u.setPassword(rs.getString("passw"));
+                u.setRuolo(rs.getString("ruolo"));
+                u.setIscrizioneNewsletter(rs.getBoolean("iscrizione_newsletter"));
+                lista.add(u);
             }
 
         } catch (SQLException e) {
@@ -88,8 +109,8 @@ public class UtenteDAO {
         return lista;
     }
 
-    //Update
-    public boolean update(Utente utente) {
+    // Aggiornamento utente
+    public boolean doUpdate(Utente utente) {
         String sql = "UPDATE Utenti SET nome=?, email=?, passw=?, ruolo=?, iscrizione_newsletter=? WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -109,8 +130,8 @@ public class UtenteDAO {
         return false;
     }
 
-    //Delete
-    public boolean delete(int id) {
+    // Cancellazione utente
+    public boolean doDelete(int id) {
         String sql = "DELETE FROM Utenti WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -124,15 +145,8 @@ public class UtenteDAO {
         return false;
     }
 
-    // Metodo di supporto per mappare ResultSet -> Utente
-    private Utente mappaUtente(ResultSet rs) throws SQLException {
-        Utente u = new Utente();
-        u.setId(rs.getInt("id"));
-        u.setNome(rs.getString("nome"));
-        u.setEmail(rs.getString("email"));
-        u.setPassword(rs.getString("passw"));
-        u.setRuolo(rs.getString("ruolo"));
-        u.setIscrizioneNewsletter(rs.getBoolean("iscrizione_newsletter"));
-        return u;
+    // Cancellazione utente per oggetto
+    public boolean doDelete(Utente utente) {
+        return doDelete(utente.getId());
     }
 }
