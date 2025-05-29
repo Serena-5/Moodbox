@@ -8,7 +8,6 @@ public class IndirizzoUtente {
     private String provincia;
     private String cap;
     private String nazione;
-    private boolean predefinito;
     
     // Costruttori
     public IndirizzoUtente() {}
@@ -44,6 +43,4 @@ public class IndirizzoUtente {
     public String getNazione() { return nazione; }
     public void setNazione(String nazione) { this.nazione = nazione; }
     
-    public boolean isPredefinito() { return predefinito; }
-    public void setPredefinito(boolean predefinito) { this.predefinito = predefinito; }
 }

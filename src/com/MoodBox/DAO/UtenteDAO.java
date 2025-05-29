@@ -11,15 +11,16 @@ public class UtenteDAO {
 
     // Salvataggio utente (equivalente a create)
     public boolean doSave(Utente utente) {
-        String sql = "INSERT INTO Utenti (nome, email, passw, ruolo, iscrizione_newsletter) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Utenti (nome, cognome, email, passw, ruolo, iscrizione_newsletter) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, utente.getNome());
-            stmt.setString(2, utente.getEmail());
-            stmt.setString(3, utente.getPassword());
-            stmt.setString(4, utente.getRuolo());
-            stmt.setBoolean(5, utente.isIscrizioneNewsletter());
+            stmt.setString(2, utente.getCognome());
+            stmt.setString(3, utente.getEmail());
+            stmt.setString(4, utente.getPassword());
+            stmt.setString(5, utente.getRuolo());
+            stmt.setBoolean(6, utente.isIscrizioneNewsletter());
 
             int righeInserite = stmt.executeUpdate();
             return righeInserite > 0;
@@ -42,6 +43,7 @@ public class UtenteDAO {
                 Utente u = new Utente();
                 u.setId(rs.getInt("id"));
                 u.setNome(rs.getString("nome"));
+                u.setCognome(rs.getString("cognome"));
                 u.setEmail(rs.getString("email"));
                 u.setPassword(rs.getString("passw"));
                 u.setRuolo(rs.getString("ruolo"));
@@ -69,6 +71,7 @@ public class UtenteDAO {
                 Utente u = new Utente();
                 u.setId(rs.getInt("id"));
                 u.setNome(rs.getString("nome"));
+                u.setCognome(rs.getString("cognome"));
                 u.setEmail(rs.getString("email"));
                 u.setPassword(rs.getString("passw"));
                 u.setRuolo(rs.getString("ruolo"));
@@ -95,6 +98,7 @@ public class UtenteDAO {
                 Utente u = new Utente();
                 u.setId(rs.getInt("id"));
                 u.setNome(rs.getString("nome"));
+                u.setCognome(rs.getString("cognome"));
                 u.setEmail(rs.getString("email"));
                 u.setPassword(rs.getString("passw"));
                 u.setRuolo(rs.getString("ruolo"));
@@ -116,11 +120,12 @@ public class UtenteDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, utente.getNome());
-            stmt.setString(2, utente.getEmail());
-            stmt.setString(3, utente.getPassword());
-            stmt.setString(4, utente.getRuolo());
-            stmt.setBoolean(5, utente.isIscrizioneNewsletter());
-            stmt.setInt(6, utente.getId());
+            stmt.setString(2,  utente.getCognome());
+            stmt.setString(3, utente.getEmail());
+            stmt.setString(4, utente.getPassword());
+            stmt.setString(5, utente.getRuolo());
+            stmt.setBoolean(6, utente.isIscrizioneNewsletter());
+            stmt.setInt(7, utente.getId());
 
             return stmt.executeUpdate() > 0;
 
