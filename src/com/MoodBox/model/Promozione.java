@@ -10,7 +10,6 @@ public class Promozione {
     private BigDecimal scontoPercentuale;
     private LocalDate dataInizio;
     private LocalDate dataFine;
-    private String tipoTarget; // 'box' o 'categoria'
     
     // Costruttori
     public Promozione() {}
@@ -20,10 +19,8 @@ public class Promozione {
         this.scontoPercentuale = scontoPercentuale;
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
-        this.tipoTarget = tipoTarget;
     }
-    
-    // Getter e Setter
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     
@@ -41,7 +38,4 @@ public class Promozione {
     
     public LocalDate getDataFine() { return dataFine; }
     public void setDataFine(LocalDate dataFine) { this.dataFine = dataFine; }
-    
-    public String getTipoTarget() { return tipoTarget; }
-    public void setTipoTarget(String tipoTarget) { this.tipoTarget = tipoTarget; }
 }
