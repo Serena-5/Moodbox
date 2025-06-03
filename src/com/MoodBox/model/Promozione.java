@@ -1,4 +1,4 @@
-package com.MoodBox.model;
+package com.moodbox.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

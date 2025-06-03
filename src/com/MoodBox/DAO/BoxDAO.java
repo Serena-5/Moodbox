@@ -1,7 +1,7 @@
-package com.MoodBox.DAO;
+package com.moodbox.DAO;
 
-import com.MoodBox.model.Box;
-import com.MoodBox.database.DatabaseConnection;
+import com.moodbox.model.Box;
+import com.moodbox.database.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;

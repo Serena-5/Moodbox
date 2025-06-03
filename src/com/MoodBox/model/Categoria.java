@@ -1,4 +1,4 @@
-package com.MoodBox.model;
+package com.moodbox.model;
 
 public class Categoria {
     private int id;

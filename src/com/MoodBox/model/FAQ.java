@@ -1,4 +1,4 @@
-package com.MoodBox.model;
+package com.moodbox.model;
 
 import java.time.LocalDateTime;
 

@@ -1,7 +1,7 @@
-package com.MoodBox.DAO;
+package com.moodbox.DAO;
 
-import com.MoodBox.model.Carrello;
-import com.MoodBox.database.DatabaseConnection;
+import com.moodbox.model.Carrello;
+import com.moodbox.database.DatabaseConnection;
 
 import java.sql.*;
 

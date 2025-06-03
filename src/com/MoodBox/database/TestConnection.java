@@ -1,4 +1,4 @@
-package com.MoodBox.database;
+package com.moodbox.database;
 
 import java.sql.Connection;
 
