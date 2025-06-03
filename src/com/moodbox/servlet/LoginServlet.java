@@ -2,18 +2,20 @@ package com.moodbox.servlet;
 
 import com.moodbox.DAO.UtenteDAO;
 
+
 import com.moodbox.model.Utente;
 
 import jakarta.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
     private UtenteDAO utenteDAO;
 
     @Override
