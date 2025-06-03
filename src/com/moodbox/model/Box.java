@@ -21,6 +21,15 @@ public class Box {
         this.disponibile = true;
     }
     
+    public Box(int id, String nome, String descrizione, BigDecimal prezzo) {
+        this.id = id;
+        this.nome = nome;
+        this.descrizione = descrizione;
+        this.prezzo = prezzo;
+        this.disponibile = true;
+    }
+
+    
     // Getter e Setter
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
