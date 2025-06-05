@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter("/*") 
+@WebFilter() 
 public class FiltroAccessoRuoli implements Filter {
 
     @Override
