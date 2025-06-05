@@ -147,4 +147,25 @@ public class OrdineDAO {
         }
         return false;
     } 
+    
+    public List<Ordine> doRetrieveByDateRange(Timestamp dataInizio, Timestamp dataFine) {
+        String sql = "SELECT * FROM Ordini WHERE data_ordine BETWEEN ? AND ? ORDER BY data_ordine DESC";
+        List<Ordine> ordini = new ArrayList<>();
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setTimestamp(1, dataInizio);
+            stmt.setTimestamp(2, dataFine);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ordini.add(extractOrdineFromResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ordini;
+    }
+
 }
