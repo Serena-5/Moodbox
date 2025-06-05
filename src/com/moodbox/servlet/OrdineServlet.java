@@ -29,7 +29,7 @@ public class OrdineServlet extends HttpServlet {
         }
 
         // Recupera info ordine
-        int utenteId = (int) session.getAttribute("utenteId"); // Assicurati che sia settato
+        int utenteId = (int) session.getAttribute("utenteId"); 
         String indirizzo = request.getParameter("indirizzoSpedizione");
         String metodoSpedizione = request.getParameter("metodoSpedizione");
         String note = request.getParameter("noteOrdine");

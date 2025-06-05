@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter("/filtro accesso")
+@WebFilter("/*") 
 public class FiltroAccessoRuoli implements Filter {
 
     @Override
@@ -18,6 +18,14 @@ public class FiltroAccessoRuoli implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
+        // Forza HTTPS se non sicura
+        if (!req.isSecure()) {
+            String secureUrl = "https://" + req.getServerName() + req.getContextPath() + req.getRequestURI();
+            res.sendRedirect(secureUrl);
+            return;
+        }
+
+        //Controllo accesso per ruolo
         String path = req.getRequestURI().substring(req.getContextPath().length());
         HttpSession session = req.getSession(false);
 
@@ -50,7 +58,6 @@ public class FiltroAccessoRuoli implements Filter {
             }
         }
 
-        // Tutto ok, prosegui
         chain.doFilter(request, response);
     }
 }

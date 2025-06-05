@@ -1,11 +1,16 @@
 package com.moodbox.DAO;
 
 import com.moodbox.model.Utente;
+
 import com.moodbox.database.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.Base64;
+
 
 public class UtenteDAO {
 
@@ -57,33 +62,28 @@ public class UtenteDAO {
         return null;
     }
 
-    // Recupero utente per email e password (Login)
     public Utente doRetrieveByCredentials(String email, String password) {
-        String sql = "SELECT * FROM Utenti WHERE email = ? AND passw = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String sql = "SELECT * FROM utenti WHERE email = ? AND password = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ps.setString(2, hashPassword(password)); // ✅ qui applichi l'hash
 
-            stmt.setString(1, email);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
-
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 Utente u = new Utente();
                 u.setId(rs.getInt("id"));
                 u.setNome(rs.getString("nome"));
-                u.setCognome(rs.getString("cognome"));
                 u.setEmail(rs.getString("email"));
-                u.setPassword(rs.getString("passw"));
                 u.setRuolo(rs.getString("ruolo"));
-                u.setIscrizioneNewsletter(rs.getBoolean("iscrizione_newsletter"));
                 return u;
             }
-
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
 
     // Recupero di tutti gli utenti
     public List<Utente> doRetrieveAll() {
@@ -154,4 +154,11 @@ public class UtenteDAO {
     public boolean doDelete(Utente utente) {
         return doDelete(utente.getId());
     }
+
+
+private String hashPassword(String password) throws Exception {
+    MessageDigest md = MessageDigest.getInstance("SHA-512");
+    byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+    return Base64.getEncoder().encodeToString(bytes);
+}
 }
