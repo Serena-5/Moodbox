@@ -1,21 +1,37 @@
 package com.moodbox.servlet;
 
+import com.moodbox.model.Utente;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-@WebServlet("/")
+@WebServlet("")
 public class HomeServlet extends HttpServlet {
-    
-	private static final long serialVersionUID = 1L;
 
-	@Override
+    private static final long serialVersionUID = 1L;
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/index.jsp").forward(request, response);
+
+        HttpSession session = request.getSession(false);
+        Utente utente = (session != null) ? (Utente) session.getAttribute("utente") : null;
+
+        if (utente != null) {
+            String ruolo = utente.getRuolo();
+
+            if ("admin".equals(ruolo)) {
+                response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+                return;
+            } else if ("cliente".equals(ruolo)) {
+                request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
+                return;
+            }
+        }
+
+        // Guest
+        request.getRequestDispatcher("/jsp/home-guest.jsp").forward(request, response);
     }
 }

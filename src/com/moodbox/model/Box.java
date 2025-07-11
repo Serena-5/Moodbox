@@ -28,6 +28,16 @@ public class Box {
         this.prezzo = prezzo;
         this.disponibile = true;
     }
+    private String immagine;
+
+    public String getImmagine() {
+        return immagine;
+    }
+
+    public void setImmagine(String immagine) {
+        this.immagine = immagine;
+    }
+
 
     
     // Getter e Setter

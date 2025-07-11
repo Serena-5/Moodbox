@@ -37,7 +37,7 @@ public class FiltroAccessoRuoli implements Filter {
         // Percorsi riservati all'admin
         if (path.startsWith("/admin")) {
             if (!"admin".equals(ruolo)) {
-                res.sendRedirect(req.getContextPath() + "/login");
+                res.sendRedirect(req.getContextPath() + "/login?error=accesso-negato");
                 return;
             }
         }
@@ -45,7 +45,7 @@ public class FiltroAccessoRuoli implements Filter {
         // Checkout solo per utenti registrati
         if (path.startsWith("/checkout")) {
             if (!"cliente".equals(ruolo) && !"admin".equals(ruolo)) {
-                res.sendRedirect(req.getContextPath() + "/login");
+                res.sendRedirect(req.getContextPath() + "/login?error=accesso-negato");
                 return;
             }
         }
@@ -53,7 +53,7 @@ public class FiltroAccessoRuoli implements Filter {
         // Accesso al profilo personale
         if (path.startsWith("/profile")) {
             if (!"cliente".equals(ruolo) && !"admin".equals(ruolo)) {
-                res.sendRedirect(req.getContextPath() + "/login");
+                res.sendRedirect(req.getContextPath() + "/login?error=accesso-negato");
                 return;
             }
         }

@@ -5,6 +5,11 @@
 
 <div class="container">
     <h2>Accedi</h2>
+    
+    <c:if test="${param.error == 'accesso-negato'}">
+    <p style="color: red;">Accesso negato. Effettua il login per continuare.</p>
+</c:if>
+    
 
     <c:if test="${not empty errorMessage}">
         <div class="errore">${errorMessage}</div>

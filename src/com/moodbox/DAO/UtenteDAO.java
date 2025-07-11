@@ -15,25 +15,28 @@ import java.util.Base64;
 public class UtenteDAO {
 
     // Salvataggio utente (equivalente a create)
-    public boolean doSave(Utente utente) {
-        String sql = "INSERT INTO Utenti (nome, cognome, email, passw, ruolo, iscrizione_newsletter) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+	public boolean doSave(Utente utente) {
+	    String sql = "INSERT INTO Utenti (nome, cognome, email, passw, ruolo, iscrizione_newsletter) VALUES (?, ?, ?, ?, ?, ?)";
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, utente.getNome());
-            stmt.setString(2, utente.getCognome());
-            stmt.setString(3, utente.getEmail());
-            stmt.setString(4, utente.getPassword());
-            stmt.setString(5, utente.getRuolo());
-            stmt.setBoolean(6, utente.isIscrizioneNewsletter());
+	        String hashedPassword = hashPassword(utente.getPassword());
 
-            int righeInserite = stmt.executeUpdate();
-            return righeInserite > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+	        stmt.setString(1, utente.getNome());
+	        stmt.setString(2, utente.getCognome());
+	        stmt.setString(3, utente.getEmail());
+	        stmt.setString(4, hashedPassword); // 🔐 Password hashata
+	        stmt.setString(5, utente.getRuolo());
+	        stmt.setBoolean(6, utente.isIscrizioneNewsletter());
+
+	        int righeInserite = stmt.executeUpdate();
+	        return righeInserite > 0;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
 
     // Recupero utente per ID
     public Utente doRetrieveByKey(int id) {
@@ -64,7 +67,7 @@ public class UtenteDAO {
 
     public Utente doRetrieveByCredentials(String email, String password) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "SELECT * FROM utenti WHERE email = ? AND password = ?";
+            String sql = "SELECT * FROM utenti WHERE email = ? AND passw = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, email);
             ps.setString(2, hashPassword(password)); // ✅ qui applichi l'hash
@@ -115,12 +118,12 @@ public class UtenteDAO {
 
     // Aggiornamento utente
     public boolean doUpdate(Utente utente) {
-        String sql = "UPDATE Utenti SET nome=?, email=?, passw=?, ruolo=?, iscrizione_newsletter=? WHERE id=?";
+        String sql = "UPDATE Utenti SET nome=?, cognome=?, email=?, passw=?, ruolo=?, iscrizione_newsletter=? WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, utente.getNome());
-            stmt.setString(2,  utente.getCognome());
+            stmt.setString(2, utente.getCognome());
             stmt.setString(3, utente.getEmail());
             stmt.setString(4, utente.getPassword());
             stmt.setString(5, utente.getRuolo());

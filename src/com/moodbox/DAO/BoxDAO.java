@@ -10,14 +10,16 @@ import java.util.List;
 public class BoxDAO {
     
     public boolean doSave(Box box) {
-        String sql = "INSERT INTO Boxes (nome, descrizione, prezzo, disponibile) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnection.getConnection();
+    	String sql = "INSERT INTO Boxes (nome, descrizione, prezzo, disponibile, immagine) VALUES (?, ?, ?, ?, ?)";
+    		try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, box.getNome());
             stmt.setString(2, box.getDescrizione());
             stmt.setBigDecimal(3, box.getPrezzo());
             stmt.setBoolean(4, box.isDisponibile());
+            stmt.setString(5, box.getImmagine());
+
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -42,6 +44,8 @@ public class BoxDAO {
                 b.setPrezzo(rs.getBigDecimal("prezzo"));
                 b.setDisponibile(rs.getBoolean("disponibile"));
                 b.setDataCreazione(rs.getTimestamp("data_creazione").toLocalDateTime());
+                b.setImmagine(rs.getString("immagine"));
+
                 return b;
             }
         } catch (SQLException e) {
@@ -66,6 +70,8 @@ public class BoxDAO {
                 b.setPrezzo(rs.getBigDecimal("prezzo"));
                 b.setDisponibile(rs.getBoolean("disponibile"));
                 b.setDataCreazione(rs.getTimestamp("data_creazione").toLocalDateTime());
+                b.setImmagine(rs.getString("immagine"));
+
                 lista.add(b);
             }
         } catch (SQLException e) {
@@ -90,6 +96,8 @@ public class BoxDAO {
                 b.setPrezzo(rs.getBigDecimal("prezzo"));
                 b.setDisponibile(rs.getBoolean("disponibile"));
                 b.setDataCreazione(rs.getTimestamp("data_creazione").toLocalDateTime());
+                b.setImmagine(rs.getString("immagine"));
+
                 lista.add(b);
             }
         } catch (SQLException e) {
@@ -99,7 +107,7 @@ public class BoxDAO {
     }
 
     public boolean doUpdate(Box box) {
-        String sql = "UPDATE Boxes SET nome=?, descrizione=?, prezzo=?, disponibile=? WHERE id=?";
+        String sql = "UPDATE Boxes SET nome=?, descrizione=?, prezzo=?, disponibile=?, immagine=? WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -107,7 +115,8 @@ public class BoxDAO {
             stmt.setString(2, box.getDescrizione());
             stmt.setBigDecimal(3, box.getPrezzo());
             stmt.setBoolean(4, box.isDisponibile());
-            stmt.setInt(5, box.getId());
+            stmt.setString(5, box.getImmagine());  // aggiunto
+            stmt.setInt(6, box.getId());           // spostato da posizione 5 a 6
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -115,6 +124,7 @@ public class BoxDAO {
         }
         return false;
     }
+
 
     public boolean doDelete(int id) {
         String sql = "DELETE FROM Boxes WHERE id=?";

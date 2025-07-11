@@ -1,0 +1,255 @@
+/* === RESET BASE === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* === FONT & BODY === */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #F2F2F2;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* === CONTAINER === */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 2rem auto;
+}
+
+/* === HEADER === */
+header {
+  background-color: #0777D9;
+  padding: 1rem;
+  text-align: center;
+}
+
+header img {
+  height: 60px;
+}
+
+/* === TITOLI === */
+h1, h2, h3 {
+  color: #126DA6;
+  margin-bottom: 1rem;
+}
+
+/* === LINK === */
+a {
+  color: #0777D9;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #1BA0F2;
+  text-decoration: underline;
+}
+
+/* === BOTTONI === */
+button {
+  background-color: #0777D9;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #1BA0F2;
+}
+
+/* === CARD PRODOTTO === */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: calc(33.33% - 1rem);
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.card .price {
+  color: #0777D9;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+/* === TABELLE === */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  margin-bottom: 2rem;
+}
+
+th, td {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+th {
+  background-color: #9BE2F2;
+}
+
+/* === FORM === */
+form input[type="text"],
+form input[type="number"],
+form textarea,
+form select {
+  width: 100%;
+  padding: 0.6rem;
+  margin: 0.5rem 0 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form button {
+  width: 100%;
+}
+
+/* === FOOTER === */
+footer {
+  background-color: #126DA6;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 992px) {
+  .card {
+    width: calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    width: 100%;
+  }
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  th {
+    display: none;
+  }
+
+  td {
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+    border: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 1rem;
+    font-weight: bold;
+    color: #126DA6;
+  }
+}
+/* ─── NAVBAR ───────────────────────────────────────────── */
+.nav-container{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.logo img{
+  height:50px;
+}
+
+.nav-links{
+  list-style:none;
+  display:flex;
+  gap:1.5rem;
+}
+
+.nav-links a{
+  color:#fff;
+  font-weight:500;
+}
+
+.nav-links a:hover{
+  color:#9BE2F2;
+  text-decoration:none;
+}
+
+/* Carrello */
+.cart-btn{
+  position:relative;
+  color:#fff;
+  font-size:1.4rem;
+}
+
+.cart-count{
+  position:absolute;
+  top:-6px;
+  right:-10px;
+  background:#1BA0F2;
+  color:#fff;
+  padding:2px 6px;
+  border-radius:50%;
+  font-size:0.75rem;
+}
+
+@media (max-width:600px){
+  .nav-links{
+    gap:0.8rem;
+  }
+  .logo img{
+    height:40px;
+  }
+}
+.cart-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.cart-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+.cart-count {
+    font-weight: bold;
+    font-size: 0.9rem;
+    background-color: #cc3333;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    display: inline-block;
+}

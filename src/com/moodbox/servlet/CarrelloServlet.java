@@ -5,6 +5,9 @@ import com.moodbox.DAO.CarrelloArticoloDAO;
 import com.moodbox.model.Carrello;
 import com.moodbox.model.CarrelloArticolo;
 import com.moodbox.model.Utente;
+import com.moodbox.DAO.BoxDAO;
+import com.moodbox.model.Box;
+
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,28 +24,17 @@ public class CarrelloServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CarrelloDAO carrelloDAO;
     private CarrelloArticoloDAO carrelloArticoloDAO;
+    private BoxDAO boxDAO;
+
 
     @Override
     public void init() throws ServletException {
         carrelloDAO = new CarrelloDAO();
         carrelloArticoloDAO = new CarrelloArticoloDAO();
+        boxDAO = new BoxDAO();
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        
-        HttpSession session = request.getSession();
-        Carrello carrello = getOrCreateCarrello(session);
-        
-        if (carrello != null) {
-            List<CarrelloArticolo> articoli = carrelloArticoloDAO.doRetrieveByCarrelloId(carrello.getId());
-            request.setAttribute("articoli", articoli);
-            request.setAttribute("carrello", carrello);
-        }
-        
-        request.getRequestDispatcher("/WEB-INF/views/carrello.jsp").forward(request, response);
-    }
+    
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -60,7 +52,36 @@ public class CarrelloServlet extends HttpServlet {
         }
         
         response.sendRedirect(request.getContextPath() + "/carrello");
-    }
+    }@Override
+            protected void doGet(HttpServletRequest request, HttpServletResponse response)
+                    throws ServletException, IOException {
+
+                HttpSession session = request.getSession();
+                Carrello carrello = getOrCreateCarrello(session);
+
+                if (carrello != null) {
+                    List<CarrelloArticolo> articoli =
+                            carrelloArticoloDAO.doRetrieveByCarrelloId(carrello.getId());
+
+                    /* collega il Box a ogni articolo */
+                    java.math.BigDecimal totale = java.math.BigDecimal.ZERO;
+                    for (CarrelloArticolo art : articoli) {
+                        art.setBox(boxDAO.doRetrieveByKey(art.getBoxId()));
+                        /* somma totale carrello */
+                        if (art.getBox() != null) {
+                            java.math.BigDecimal sub = art.getBox().getPrezzo()
+                                                          .multiply(java.math.BigDecimal.valueOf(art.getQuantita()));
+                            totale = totale.add(sub);
+                        }
+                    }
+
+                    request.setAttribute("articoli", articoli);
+                    request.setAttribute("totale",   totale);
+                }
+
+                request.getRequestDispatcher("/jsp/carrello.jsp").forward(request, response);
+            }
+
 
     private void aggiungiAlCarrello(HttpServletRequest request, HttpSession session) {
         try {

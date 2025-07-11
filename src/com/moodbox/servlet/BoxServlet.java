@@ -31,7 +31,7 @@ public class BoxServlet extends HttpServlet {
         if (pathInfo == null || pathInfo.equals("/")) {
             List<Box> boxList = boxDAO.doRetrieveAvailable();
             request.setAttribute("boxList", boxList);
-            request.getRequestDispatcher("/WEB-INF/views/box.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/box.jsp").forward(request, response);
 
         } else if (pathInfo.startsWith("/dettaglio/")) {
             try {
@@ -39,7 +39,7 @@ public class BoxServlet extends HttpServlet {
                 Box box = boxDAO.doRetrieveByKey(id);
                 if (box != null && box.isDisponibile()) {
                     request.setAttribute("box", box);
-                    request.getRequestDispatcher("/WEB-INF/views/box-dettaglio.jsp").forward(request, response);
+                    request.getRequestDispatcher("/jsp/box-dettaglio.jsp").forward(request, response);
                 } else {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 }
