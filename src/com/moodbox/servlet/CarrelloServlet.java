@@ -6,7 +6,7 @@ import com.moodbox.model.Carrello;
 import com.moodbox.model.CarrelloArticolo;
 import com.moodbox.model.Utente;
 import com.moodbox.DAO.BoxDAO;
-import com.moodbox.model.Box;
+
 
 
 import jakarta.servlet.ServletException;

@@ -1,37 +1,45 @@
 package com.moodbox.servlet;
 
+
 import com.moodbox.model.Utente;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-@WebServlet("")
+@WebServlet("/home")           //  r
 public class HomeServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    
+
+   
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
-        Utente utente = (session != null) ? (Utente) session.getAttribute("utente") : null;
+        /* ──── Sessione & utente ─────────────────────────── */
+        HttpSession session = req.getSession(false);   // false = non crearla se non c’è
+        Utente ut = (session != null) ?
+                     (Utente) session.getAttribute("utente") : null;
 
-        if (utente != null) {
-            String ruolo = utente.getRuolo();
+  
 
-            if ("admin".equals(ruolo)) {
-                response.sendRedirect(request.getContextPath() + "/admin/dashboard");
-                return;
-            } else if ("cliente".equals(ruolo)) {
-                request.getRequestDispatcher("/jsp/home.jsp").forward(request, response);
-                return;
+        /* ──── Routing in base al ruolo ──────────────────── */
+        if (ut != null) {
+            switch (ut.getRuolo()) {
+                case "admin"   -> resp.sendRedirect(req.getContextPath() + "/admin/dashboard");
+                case "cliente" -> req.getRequestDispatcher("/jsp/home.jsp")
+                                      .forward(req, resp);
+                default        -> req.getRequestDispatcher("/jsp/home-guest.jsp")
+                                      .forward(req, resp);
             }
+        } else { // guest senza login
+            req.getRequestDispatcher("/jsp/home-guest.jsp").forward(req, resp);
         }
-
-        // Guest
-        request.getRequestDispatcher("/jsp/home-guest.jsp").forward(request, response);
     }
 }

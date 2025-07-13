@@ -11,14 +11,14 @@
 <header>
     <div class="nav-container">
         <!-- Logo -->
-        <a href="${pageContext.request.contextPath}/" class="logo">
+        <a href="${pageContext.request.contextPath}/home" class="logo">
             <img src="${pageContext.request.contextPath}/images/logo.png" alt="MoodBox">
         </a>
 
         <!-- Nav menu -->
         <nav>
             <ul class="nav-links">
-                <li><a href="${pageContext.request.contextPath}/">Home</a></li>
+                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
                 <li><a href="${pageContext.request.contextPath}/box">Catalogo</a></li>
                 
                 <c:choose>
