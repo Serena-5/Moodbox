@@ -12,30 +12,35 @@ import java.util.List;
  */
 public class OrdineDAO {
 
-    /* ==============================================================
+    /* ============================================================== 
        CREA (ritorna ID generato)
        ============================================================== */
     public int doSave(Ordine ordine) {
 
         final String sql = """
             INSERT INTO Ordini
-              (utente_id, indirizzo_spedizione, metodo_spedizione,
-               costo_spedizione, stato_ordine, totale,
+              (utente_id, via, civico, cap, citta, provincia, paese,
+               metodo_spedizione, costo_spedizione, stato_ordine, totale,
                note_ordine, data_ordine)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """;
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1,  ordine.getUtenteId());
-            stmt.setString(2, ordine.getIndirizzoSpedizione());
-            stmt.setString(3, ordine.getMetodoSpedizione());
-            stmt.setBigDecimal(4, ordine.getCostoSpedizione());
-            stmt.setString(5, ordine.getStatoOrdine());
-            stmt.setBigDecimal(6, ordine.getTotale());
-            stmt.setString(7, ordine.getNoteOrdine());
-            stmt.setTimestamp(8,
+            stmt.setInt       (1,  ordine.getUtenteId());
+            stmt.setString    (2,  ordine.getVia());
+            stmt.setString    (3,  ordine.getCivico());
+            stmt.setString    (4,  ordine.getCap());
+            stmt.setString    (5,  ordine.getCitta());
+            stmt.setString    (6,  ordine.getProvincia());
+            stmt.setString    (7,  ordine.getPaese());
+            stmt.setString    (8,  ordine.getMetodoSpedizione());
+            stmt.setBigDecimal(9,  ordine.getCostoSpedizione());
+            stmt.setString    (10, ordine.getStatoOrdine());
+            stmt.setBigDecimal(11, ordine.getTotale());
+            stmt.setString    (12, ordine.getNoteOrdine());
+            stmt.setTimestamp (13,
                     ordine.getDataOrdine() != null ? Timestamp.valueOf(ordine.getDataOrdine()) : null);
 
             int affected = stmt.executeUpdate();
@@ -46,13 +51,11 @@ public class OrdineDAO {
                     }
                 }
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        } catch (SQLException ex) { ex.printStackTrace(); }
         return -1;                                       // errore
     }
 
-    /* ==============================================================
+    /* ============================================================== 
        READ – by PK
        ============================================================== */
     public Ordine doRetrieveByKey(int id) {
@@ -68,7 +71,7 @@ public class OrdineDAO {
         return null;
     }
 
-    /* ==============================================================
+    /* ============================================================== 
        READ – tutti
        ============================================================== */
     public List<Ordine> doRetrieveAll() {
@@ -83,7 +86,7 @@ public class OrdineDAO {
         return lista;
     }
 
-    /* ==============================================================
+    /* ============================================================== 
        READ – per utente
        ============================================================== */
     public List<Ordine> doRetrieveByUtenteId(int utenteId) {
@@ -100,7 +103,7 @@ public class OrdineDAO {
         return lista;
     }
 
-    /* ==============================================================
+    /* ============================================================== 
        READ – range date
        ============================================================== */
     public List<Ordine> doRetrieveByDateRange(Timestamp dal, Timestamp al) {
@@ -121,36 +124,40 @@ public class OrdineDAO {
         return lista;
     }
 
-    /* ==============================================================
+    /* ============================================================== 
        UPDATE completo
        ============================================================== */
     public boolean doUpdate(Ordine ordine) {
         final String sql = """
              UPDATE Ordini SET
-               indirizzo_spedizione = ?, metodo_spedizione = ?,
-               costo_spedizione    = ?, stato_ordine      = ?,
-               totale              = ?, note_ordine       = ?,
-               data_ordine         = ?
+               via = ?, civico = ?, cap = ?, citta = ?, provincia = ?, paese = ?,
+               metodo_spedizione = ?, costo_spedizione = ?, stato_ordine = ?,
+               totale = ?, note_ordine = ?, data_ordine = ?
              WHERE id = ?""";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, ordine.getIndirizzoSpedizione());
-            ps.setString(2, ordine.getMetodoSpedizione());
-            ps.setBigDecimal(3, ordine.getCostoSpedizione());
-            ps.setString(4, ordine.getStatoOrdine());
-            ps.setBigDecimal(5, ordine.getTotale());
-            ps.setString(6, ordine.getNoteOrdine());
-            ps.setTimestamp(7,
+            ps.setString    (1,  ordine.getVia());
+            ps.setString    (2,  ordine.getCivico());
+            ps.setString    (3,  ordine.getCap());
+            ps.setString    (4,  ordine.getCitta());
+            ps.setString    (5,  ordine.getProvincia());
+            ps.setString    (6,  ordine.getPaese());
+            ps.setString    (7,  ordine.getMetodoSpedizione());
+            ps.setBigDecimal(8,  ordine.getCostoSpedizione());
+            ps.setString    (9,  ordine.getStatoOrdine());
+            ps.setBigDecimal(10, ordine.getTotale());
+            ps.setString    (11, ordine.getNoteOrdine());
+            ps.setTimestamp (12,
                     ordine.getDataOrdine() != null ? Timestamp.valueOf(ordine.getDataOrdine()) : null);
-            ps.setInt(8, ordine.getId());
+            ps.setInt       (13, ordine.getId());
 
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) { ex.printStackTrace(); }
         return false;
     }
 
-    /* ==============================================================
+    /* ============================================================== 
        UPDATE – solo stato
        ============================================================== */
     public boolean doUpdateStato(int ordineId, String nuovoStato) {
@@ -165,7 +172,7 @@ public class OrdineDAO {
         return false;
     }
 
-    /* ==============================================================
+    /* ============================================================== 
        DELETE
        ============================================================== */
     public boolean doDelete(int id) {
@@ -179,21 +186,30 @@ public class OrdineDAO {
         return false;
     }
 
-    /* ==============================================================
+    /* ============================================================== 
        Utility – mappa ResultSet→Ordine
        ============================================================== */
     private Ordine extract(ResultSet rs) throws SQLException {
         Ordine o = new Ordine();
         o.setId(rs.getInt("id"));
         o.setUtenteId(rs.getInt("utente_id"));
-        o.setIndirizzoSpedizione(rs.getString("indirizzo_spedizione"));
+
+        o.setVia       (rs.getString("via"));
+        o.setCivico    (rs.getString("civico"));
+        o.setCap       (rs.getString("cap"));
+        o.setCitta     (rs.getString("citta"));
+        o.setProvincia (rs.getString("provincia"));
+        o.setPaese     (rs.getString("paese"));
+
         o.setMetodoSpedizione(rs.getString("metodo_spedizione"));
         o.setCostoSpedizione(rs.getBigDecimal("costo_spedizione"));
         o.setStatoOrdine(rs.getString("stato_ordine"));
         o.setTotale(rs.getBigDecimal("totale"));
         o.setNoteOrdine(rs.getString("note_ordine"));
+
         Timestamp ts = rs.getTimestamp("data_ordine");
         if (ts != null) o.setDataOrdine(ts.toLocalDateTime());
+
         return o;
     }
 }

@@ -6,7 +6,16 @@ import java.time.LocalDateTime;
 public class Ordine {
     private int id;
     private int utenteId;
-    private String indirizzoSpedizione;
+
+    
+    private String via;
+    private String civico;
+    private String cap;
+    private String citta;
+    private String provincia;
+    private String paese;
+
+    private String indirizzoSpedizione; // puoi ancora usarlo se ti serve concatenato
     private String metodoSpedizione;
     private BigDecimal costoSpedizione;
     private String statoOrdine;
@@ -20,6 +29,24 @@ public class Ordine {
 
     public int getUtenteId() { return utenteId; }
     public void setUtenteId(int utenteId) { this.utenteId = utenteId; }
+
+    public String getVia() { return via; }
+    public void setVia(String via) { this.via = via; }
+
+    public String getCivico() { return civico; }
+    public void setCivico(String civico) { this.civico = civico; }
+
+    public String getCap() { return cap; }
+    public void setCap(String cap) { this.cap = cap; }
+
+    public String getCitta() { return citta; }
+    public void setCitta(String citta) { this.citta = citta; }
+
+    public String getProvincia() { return provincia; }
+    public void setProvincia(String provincia) { this.provincia = provincia; }
+
+    public String getPaese() { return paese; }
+    public void setPaese(String paese) { this.paese = paese; }
 
     public String getIndirizzoSpedizione() { return indirizzoSpedizione; }
     public void setIndirizzoSpedizione(String indirizzoSpedizione) { this.indirizzoSpedizione = indirizzoSpedizione; }

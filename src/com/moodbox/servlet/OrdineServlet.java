@@ -37,7 +37,6 @@ public class OrdineServlet extends HttpServlet {
         /* ─── 1. Controlli preliminari ─────────────────────────────────── */
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("utente") == null) {
-            // utente non loggato → login
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
@@ -51,13 +50,24 @@ public class OrdineServlet extends HttpServlet {
             return;
         }
 
-        /* ─── 2. Leggi campi del form checkout ─────────────────────────── */
-        String indirizzo        = request.getParameter("indirizzoSpedizione");
+        /* ─── 2. Leggi campi dettagliati del form checkout ─────────────── */
+        String via            = request.getParameter("via");
+        String civico         = request.getParameter("civico");
+        String cap            = request.getParameter("cap");
+        String citta          = request.getParameter("citta");
+        String provincia      = request.getParameter("provincia");
+        String paese          = request.getParameter("paese");
+
         String metodoSpedizione = request.getParameter("metodoSpedizione");
         String note             = request.getParameter("noteOrdine");
 
-        if (indirizzo == null || indirizzo.isBlank()
-         || metodoSpedizione == null || metodoSpedizione.isBlank()) {
+        if (via == null || via.isBlank() ||
+            civico == null || civico.isBlank() ||
+            cap == null || cap.isBlank() ||
+            citta == null || citta.isBlank() ||
+            provincia == null || provincia.isBlank() ||
+            paese == null || paese.isBlank() ||
+            metodoSpedizione == null || metodoSpedizione.isBlank()) {
 
             response.sendRedirect(request.getContextPath() + "/checkout?errore=dati");
             return;
@@ -82,7 +92,15 @@ public class OrdineServlet extends HttpServlet {
 
         Ordine ordine = new Ordine();
         ordine.setUtenteId(utente.getId());
-        ordine.setIndirizzoSpedizione(indirizzo);
+
+        // Nuovi campi indirizzo
+        ordine.setVia(via);
+        ordine.setCivico(civico);
+        ordine.setCap(cap);
+        ordine.setCitta(citta);
+        ordine.setProvincia(provincia);
+        ordine.setPaese(paese);
+
         ordine.setMetodoSpedizione(metodoSpedizione);
         ordine.setCostoSpedizione(costoSpedizione);
         ordine.setTotale(totaleOrdine);
@@ -90,8 +108,8 @@ public class OrdineServlet extends HttpServlet {
         ordine.setStatoOrdine("In elaborazione");
         ordine.setDataOrdine(LocalDateTime.now());
 
-        int ordineId = ordineDAO.doSave(ordine);   // deve restituire l’ID
-        if (ordineId == -1) {                      // -1 = salvataggio fallito
+        int ordineId = ordineDAO.doSave(ordine);
+        if (ordineId == -1) {
             response.sendRedirect(request.getContextPath() + "/checkout?errore=salvataggio");
             return;
         }
@@ -108,7 +126,7 @@ public class OrdineServlet extends HttpServlet {
 
         /* ─── 6. Svuota il carrello e redirect alla pagina conferma ────── */
         session.removeAttribute("carrello");
-        session.setAttribute("ordineConfermato", ordine); // se vuoi mostrarlo
+        session.setAttribute("ordineConfermato", ordine); // per conferma visuale
 
         response.sendRedirect(request.getContextPath()
                                + "/jsp/confermaOrdine.jsp?id=" + ordineId);
