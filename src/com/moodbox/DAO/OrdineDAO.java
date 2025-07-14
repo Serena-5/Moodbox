@@ -20,9 +20,9 @@ public class OrdineDAO {
         final String sql = """
             INSERT INTO Ordini
               (utente_id, via, civico, cap, citta, provincia, paese,
-               metodo_spedizione, costo_spedizione, stato_ordine, totale,
+               metodo_spedizione, metodo_pagamento, costo_spedizione, stato_ordine, totale,
                note_ordine, data_ordine)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """;
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -36,12 +36,12 @@ public class OrdineDAO {
             stmt.setString    (6,  ordine.getProvincia());
             stmt.setString    (7,  ordine.getPaese());
             stmt.setString    (8,  ordine.getMetodoSpedizione());
-            stmt.setBigDecimal(9,  ordine.getCostoSpedizione());
-            stmt.setString    (10, ordine.getStatoOrdine());
-            stmt.setBigDecimal(11, ordine.getTotale());
-            stmt.setString    (12, ordine.getNoteOrdine());
-            stmt.setTimestamp (13,
-                    ordine.getDataOrdine() != null ? Timestamp.valueOf(ordine.getDataOrdine()) : null);
+            stmt.setString	  (9, ordine.getMetodoPagamento());
+            stmt.setBigDecimal(10,  ordine.getCostoSpedizione());
+            stmt.setString    (11, ordine.getStatoOrdine());
+            stmt.setBigDecimal(12, ordine.getTotale());
+            stmt.setString    (13, ordine.getNoteOrdine());
+            stmt.setTimestamp (14,ordine.getDataOrdine() != null ? Timestamp.valueOf(ordine.getDataOrdine()) : null);
 
             int affected = stmt.executeUpdate();
             if (affected > 0) {
@@ -131,7 +131,7 @@ public class OrdineDAO {
         final String sql = """
              UPDATE Ordini SET
                via = ?, civico = ?, cap = ?, citta = ?, provincia = ?, paese = ?,
-               metodo_spedizione = ?, costo_spedizione = ?, stato_ordine = ?,
+               metodo_spedizione = ?,metodo_pagamento = ?, costo_spedizione = ?, stato_ordine = ?,
                totale = ?, note_ordine = ?, data_ordine = ?
              WHERE id = ?""";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -144,13 +144,13 @@ public class OrdineDAO {
             ps.setString    (5,  ordine.getProvincia());
             ps.setString    (6,  ordine.getPaese());
             ps.setString    (7,  ordine.getMetodoSpedizione());
-            ps.setBigDecimal(8,  ordine.getCostoSpedizione());
-            ps.setString    (9,  ordine.getStatoOrdine());
-            ps.setBigDecimal(10, ordine.getTotale());
-            ps.setString    (11, ordine.getNoteOrdine());
-            ps.setTimestamp (12,
-                    ordine.getDataOrdine() != null ? Timestamp.valueOf(ordine.getDataOrdine()) : null);
-            ps.setInt       (13, ordine.getId());
+            ps.setString	(8,ordine.getMetodoPagamento());
+            ps.setBigDecimal(9,  ordine.getCostoSpedizione());
+            ps.setString    (10,  ordine.getStatoOrdine());
+            ps.setBigDecimal(11, ordine.getTotale());
+            ps.setString    (12, ordine.getNoteOrdine());
+            ps.setTimestamp (13, ordine.getDataOrdine() != null ? Timestamp.valueOf(ordine.getDataOrdine()) : null);
+            ps.setInt       (14, ordine.getId());
 
             return ps.executeUpdate() > 0;
         } catch (SQLException ex) { ex.printStackTrace(); }
@@ -202,6 +202,7 @@ public class OrdineDAO {
         o.setPaese     (rs.getString("paese"));
 
         o.setMetodoSpedizione(rs.getString("metodo_spedizione"));
+        o.setMetodoPagamento(rs.getString("metodo_pagamento"));
         o.setCostoSpedizione(rs.getBigDecimal("costo_spedizione"));
         o.setStatoOrdine(rs.getString("stato_ordine"));
         o.setTotale(rs.getBigDecimal("totale"));

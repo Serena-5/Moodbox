@@ -8,7 +8,7 @@
             <h2><c:out value="${box.nome}" /></h2>
 
             <img src="${pageContext.request.contextPath}/images/${box.immagine}"
-                 alt="${box.nome}" style="max-width:100%; height:auto; border-radius:8px;" />
+                 alt="${box.nome}" style="max-width:90%;height:auto; border-radius:8px;" />
 
             <p><strong>Descrizione:</strong> <c:out value="${box.descrizione}" /></p>
             <p><strong>Prezzo:</strong> € <c:out value="${box.prezzo}" /></p>

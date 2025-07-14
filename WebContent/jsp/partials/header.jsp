@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+<c:if test="${empty noDefaultNav}">
 <header>
     <div class="nav-container">
         <!-- Logo -->
@@ -45,3 +46,4 @@
 	</a>
    </div>
 </header>
+</c:if>

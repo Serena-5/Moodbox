@@ -15,7 +15,7 @@ public class Ordine {
     private String provincia;
     private String paese;
 
-    private String indirizzoSpedizione; // puoi ancora usarlo se ti serve concatenato
+    private String metodoPagamento = "PayPal";
     private String metodoSpedizione;
     private BigDecimal costoSpedizione;
     private String statoOrdine;
@@ -48,8 +48,8 @@ public class Ordine {
     public String getPaese() { return paese; }
     public void setPaese(String paese) { this.paese = paese; }
 
-    public String getIndirizzoSpedizione() { return indirizzoSpedizione; }
-    public void setIndirizzoSpedizione(String indirizzoSpedizione) { this.indirizzoSpedizione = indirizzoSpedizione; }
+    public String getMetodoPagamento() {return metodoPagamento;}
+    public void setMetodoPagamento(String metodoPagamento) {this.metodoPagamento = metodoPagamento;}
 
     public String getMetodoSpedizione() { return metodoSpedizione; }
     public void setMetodoSpedizione(String metodoSpedizione) { this.metodoSpedizione = metodoSpedizione; }

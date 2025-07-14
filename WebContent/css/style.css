@@ -253,3 +253,572 @@ footer {
     padding: 2px 6px;
     display: inline-block;
 }
+
+:root {
+  --primary: #0078d7;
+  --accent: #e91e63;
+  --bg: #fff;
+  --text: #333;
+}
+
+.hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('../images/boxes-banner.png') center/cover no-repeat #3ac0fd;
+  z-index: 0;
+}
+
+.hero-left {
+  position: relative;
+  z-index: 10;
+  max-width: 55%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  padding: 120px 60px 60px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.brand img {
+  height: 160px;
+  width: auto;
+  object-fit: contain;
+}
+
+.cta {
+  display: inline-block;
+  padding: 14px 34px;
+  border-radius: 40px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.25s;
+}
+
+.cta:hover {
+  background: #005fb3;
+}
+
+/* NAVBAR */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 18px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 20;
+  background: transparent;
+}
+
+.nav-logo img {
+  height: 48px;
+  width: auto;
+  cursor: pointer;
+}
+
+.nav ul {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity 0.25s;
+}
+
+.nav a:hover {
+  opacity: 0.8;
+}
+
+#toggle {
+  display: none;
+}
+
+.hamb {
+  display: none;
+  width: 26px;
+  height: 2px;
+  background: #fff;
+  position: relative;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.hamb::before,
+.hamb::after {
+  content: "";
+  position: absolute;
+  width: 26px;
+  height: 2px;
+  background: #fff;
+  transition: 0.3s;
+}
+
+.hamb::before {
+  top: -8px;
+}
+
+.hamb::after {
+  top: 8px;
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+  }
+
+  .hero-left {
+    max-width: 100%;
+    padding: 140px 28px 60px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .brand img {
+    height: 120px;
+  }
+
+  .hero::after {
+    background-size: cover;
+    background-position: center bottom;
+  }
+}
+
+@media (max-width: 680px) {
+  .nav ul {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: 70%;
+    background: #0078d7;
+    flex-direction: column;
+    padding: 100px 32px;
+    transform: translateX(100%);
+    transition: 0.4s;
+  }
+
+  .nav ul a {
+    font-size: 1.2rem;
+  }
+
+  #toggle:checked ~ ul {
+    transform: translateX(0);
+  }
+
+  .hamb {
+    display: block;
+  }
+
+  #toggle:checked + label .hamb {
+    background: transparent;
+  }
+
+  #toggle:checked + label .hamb::before {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  #toggle:checked + label .hamb::after {
+    transform: rotate(-45deg) translate(7px, -6px);
+  }
+}
+
+/* === CHECKOUT === */
+.checkout-wrapper{
+  max-width:900px;
+  margin:40px auto;
+  padding:0 1rem;
+}
+
+.checkout-head{
+  text-align:center;
+  margin-bottom:28px;
+}
+
+/* ─── Cart table ─────────────────────── */
+.cart-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:.95rem;
+  margin-bottom:32px;
+}
+.cart-table th,
+.cart-table td{
+  padding:12px;
+  border-bottom:1px solid #e2e5ea;
+}
+.cart-table th{
+  background:#f4f7fb;
+  color:#126DA6;
+}
+.cart-table .img-col img{
+  width:60px;
+  height:auto;
+  border-radius:6px;
+}
+.cart-table .right{ text-align:right; }
+.grand-total{
+  font-size:1.1rem;
+  color:#0C8BE8;
+}
+
+/* ─── Checkout form ─────────────────── */
+.checkout-form fieldset{
+  border:1px solid #ddd;
+  border-radius:8px;
+  padding:20px;
+  margin-bottom:24px;
+  background:#fff;
+}
+.checkout-form legend{
+  padding:0 8px;
+  font-weight:600;
+  color:#0C8BE8;
+}
+.form-group{
+  margin-bottom:18px;
+}
+.form-group input,
+.form-group select,
+.form-group textarea{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-size:1rem;
+  background:#fafafa;
+}
+.form-group label{
+  display:block;
+  margin-bottom:6px;
+  font-weight:600;
+}
+
+/* ─── Layout due colonne (desktop) ──── */
+.two-cols{
+  display:flex;
+  gap:16px;
+}
+.two-cols .small{
+  flex:0 0 140px;
+}
+.two-cols.gap{
+  margin-bottom:20px;
+}
+
+/* ─── Bottone principale ────────────── */
+.btn-primary{
+  display:block;
+  width:100%;
+  padding:14px;
+  background:#0777D9;
+  border:none;
+  border-radius:6px;
+  color:#fff;
+  font-size:1.1rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:background .25s;
+}
+.btn-primary:hover{
+  background:#1BA0F2;
+}
+
+/* ─── Mobile tweaks ─────────────────── */
+@media(max-width:640px){
+  .two-cols{
+    flex-direction:column;
+  }
+  .two-cols .small{
+    flex:1 1 auto;
+  }
+  /* nascondi colonna immagini */
+  .cart-table th:nth-child(2),
+  .cart-table td:nth-child(2){
+    display:none;
+  }
+}
+
+/* === LOGIN PAGE === */
+
+.banner .glass .input-wrap > input {
+  padding-left: 60px !important;   
+}
+
+html,body{
+  height:100%;              /* occupa 100% viewport */
+  display:block;            /* rimuove flex di colonna */
+}
+
+.banner{
+  min-height:100vh;         /* sempre altezza piena */
+  display:flex;             /* centra la card */
+  justify-content:center;
+  align-items:center;
+}
+
+
+.banner {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('../images/lr-banner.png') center/cover no-repeat;
+  z-index: -2;
+}
+
+.banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(4px);
+  z-index: -1;
+}
+
+.glass {
+  width: 90%;
+  max-width: 420px;
+  padding: 40px 32px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.glass h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #e91e63;
+}
+
+.input-wrap {
+  position: relative;
+  margin-top: 20px;
+}
+
+.input-wrap img {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  opacity: 0.7;
+}
+
+.input-wrap input {
+  width: 100%;
+  padding: 10px 12px 10px 46px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+
+
+.btn {
+  margin-top: 28px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #0078d7;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.btn:hover {
+  background: #005fb3;
+}
+
+.errore {
+  color: #e00;
+  font-size: 0.9rem;
+  margin-top: 12px;
+}
+
+/* === REGISTER PAGE === */
+.banner{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+.banner::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:url('../images/lr-banner.png') center/cover no-repeat;
+  z-index:-2;
+}
+.banner::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  backdrop-filter:blur(4px);
+  z-index:-1;
+}
+
+/* card effetto vetro */
+.glass{
+  width:90%;
+  max-width:420px;
+  padding:40px 32px;
+  border-radius:20px;
+  background:rgba(255,255,255,.25);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow:0 8px 32px rgba(0,0,0,.25);
+  color:#333;
+}
+.glass h2{
+  text-align:center;
+  margin-bottom:24px;
+  color:#e91e63;
+}
+
+/* campi */
+label{font-weight:600;margin-top:14px;display:block}
+input[type=text],
+input[type=email],
+input[type=password]{
+  width:100%;
+  padding:10px 12px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  background:rgba(255,255,255,.6);
+}
+
+/* bottone */
+.btn{
+  margin-top:28px;
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#0078d7;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  transition:.25s;
+}
+.btn:hover{background:#005fb3}
+
+/* messaggi */
+.errore  {color:#e00;font-size:.9rem;margin-top:12px}
+.successo{color:#070;font-size:.9rem;margin-top:12px}
+
+
+/*banner conferma ordine*/
+
+/* === CONFIRM ORDER – Banner + card bianca ==================== */
+.confirm-page{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;       /* centra orizzontalmente */
+  align-items:flex-start;       /* in alto */
+  padding-top:60px;             /* distanza dal bordo superiore */
+  position:relative;
+  overflow:hidden;
+}
+
+.confirm-page::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:url('../images/co-banner.png') center/cover no-repeat;
+  z-index:-1;                   
+}
+
+.confirm-page::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  backdrop-filter:blur(4px);    /* leggero blur sopra il banner */
+  z-index:-1;
+}
+
+/* Card bianca */
+.confirm-box{
+  width:90%;
+  max-width:700px;
+  background:#ffffffee;         /* bianco quasi pieno (ee = 93% opaco) */
+  border-radius:12px;
+  box-shadow:0 6px 24px rgba(0,0,0,.15);
+  padding:40px 28px;
+  text-align:center;
+  color:#333;                   /* testo scuro leggibile */
+}
+
+.confirm-box h2{
+  color:#2e7d32;
+  margin-bottom:14px;
+  font-weight:700;
+}
+
+.order-info{
+  margin:25px auto;
+  border:1px solid #ccc;
+  border-radius:8px;
+  padding:15px;
+  max-width:500px;
+  background:#fff;              /* riquadro riepilogo sempre bianco pieno */
+}
+
+.order-info table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:.9rem;
+}
+.order-info th,
+.order-info td{
+  padding:6px 4px;
+}
+.order-info th{
+  text-align:left;
+  border-bottom:1px solid #ddd;
+  color:#126DA6;
+}
+.order-info td{ color:#333; }
+
+.btn-row a.button{
+  display:inline-block;
+  margin:0 12px;
+  padding:12px 24px;
+  background:#0777D9;
+  color:#fff;
+  border-radius:6px;
+  font-weight:600;
+  text-decoration:none;
+  transition:.25s;
+}
+.btn-row a.button:hover{ background:#1BA0F2; }
