@@ -4,46 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <title>MoodBox</title>
+
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+
 <c:if test="${empty noDefaultNav}">
 <header>
     <div class="nav-container">
+
         <!-- Logo -->
         <a href="${pageContext.request.contextPath}/home" class="logo">
             <img src="${pageContext.request.contextPath}/images/logo.png" alt="MoodBox">
         </a>
 
-        <!-- Nav menu -->
+        <!-- Menu -->
         <nav>
             <ul class="nav-links">
-                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
                 <li><a href="${pageContext.request.contextPath}/box">Catalogo</a></li>
-                
+
                 <c:choose>
                     <c:when test="${empty sessionScope.utente}">
                         <li><a href="${pageContext.request.contextPath}/login">Login</a></li>
                         <li><a href="${pageContext.request.contextPath}/register">Registrati</a></li>
                     </c:when>
+
                     <c:otherwise>
                         <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
+
                         <c:if test="${sessionScope.ruolo == 'admin'}">
-                            <li><a href="${pageContext.request.contextPath}/admin/dashboard">Admin</a></li>
+                            <li><a href="${pageContext.request.contextPath}/admin/dashboard">Dashboard admin</a></li>
+                            <li><a href="${pageContext.request.contextPath}/admin/catalogo">Gestione catalogo</a></li>
                         </c:if>
                     </c:otherwise>
                 </c:choose>
             </ul>
         </nav>
 
-        <!-- Carrello -->
-        <a href="${pageContext.request.contextPath}/carrello" class="cart-btn">
-    <img src="${pageContext.request.contextPath}/images/shopping-cart.svg" alt="Carrello" class="cart-icon" />
-    <span class="cart-count">
-        <c:out value="${sessionScope.carrello != null ? sessionScope.carrello.size() : 0}" />
-    	</span>
-	</a>
-   </div>
+        <c:if test="${empty sessionScope.ruolo || sessionScope.ruolo ne 'admin'}">
+            <a href="${pageContext.request.contextPath}/carrello" class="cart-btn">
+                <img src="${pageContext.request.contextPath}/images/shopping-cart.svg"
+                     alt="Carrello" class="cart-icon" />
+                <span class="cart-count">
+                    <c:out value="${sessionScope.carrello != null ? sessionScope.carrello.size() : 0}" />
+                </span>
+            </a>
+        </c:if>
+
+    </div>
 </header>
 </c:if>
