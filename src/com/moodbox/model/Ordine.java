@@ -22,6 +22,7 @@ public class Ordine {
     private LocalDateTime dataOrdine;
     private BigDecimal totale;
     private String noteOrdine;
+    private String emailCliente;
 
     // Getters e Setters
     public int getId() { return id; }
@@ -68,4 +69,7 @@ public class Ordine {
 
     public String getNoteOrdine() { return noteOrdine; }
     public void setNoteOrdine(String noteOrdine) { this.noteOrdine = noteOrdine; }
+    
+    public String getEmailCliente() {return emailCliente;}
+    public void setEmailCliente(String emailCliente) {this.emailCliente = emailCliente;}
 }

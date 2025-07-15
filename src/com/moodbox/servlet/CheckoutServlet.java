@@ -3,6 +3,7 @@ package com.moodbox.servlet;
 import com.moodbox.DAO.BoxDAO;
 import com.moodbox.DAO.CarrelloArticoloDAO;
 import com.moodbox.DAO.CarrelloDAO;
+import com.moodbox.DAO.OrdineDAO;
 import com.moodbox.model.Box;
 import com.moodbox.model.Carrello;
 import com.moodbox.model.CarrelloArticolo;
@@ -81,5 +82,85 @@ public class CheckoutServlet extends HttpServlet {
                .forward(request, response);
     }
 
-    /* Se servisse il POST per pagare, lo aggiungerai qui */
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        /* ========== 1. Recupera carrello dalla sessione ========== */
+        HttpSession session = req.getSession();
+        @SuppressWarnings("unchecked")
+        Map<Integer,CarrelloArticolo> carrello =
+                (Map<Integer,CarrelloArticolo>) session.getAttribute("carrello");
+
+        if (carrello == null || carrello.isEmpty()) {
+            resp.sendRedirect(req.getContextPath() + "/carrello");
+            return;
+        }
+
+        /* ========== 2. Recupera utente loggato ========== */
+        var utente = (com.moodbox.model.Utente) session.getAttribute("utente");
+        if (utente == null) {
+            resp.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
+
+        /* ========== 3. Leggi i dati form spedizione/pagamento ========== */
+        String via       = req.getParameter("via");
+        String civico    = req.getParameter("civico");
+        String cap       = req.getParameter("cap");
+        String citta     = req.getParameter("citta");
+        String provincia = req.getParameter("provincia");
+        String paese     = req.getParameter("paese");
+
+        String metodoSped = req.getParameter("metodoSpedizione");
+        String metodoPay  = req.getParameter("metodoPagamento");
+        String note       = req.getParameter("note");
+
+        /* ========== 4. Calcola il totale carrello ========== */
+        BigDecimal totale = carrello.values().stream()
+            .map(r -> r.getBox().getPrezzo()
+                       .multiply(BigDecimal.valueOf(r.getQuantita())))
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        /* ========== 5. Crea oggetto Ordine ========== */
+        com.moodbox.model.Ordine ordine = new com.moodbox.model.Ordine();
+        ordine.setUtenteId(utente.getId());
+        ordine.setVia(via);
+        ordine.setCivico(civico);
+        ordine.setCap(cap);
+        ordine.setCitta(citta);
+        ordine.setProvincia(provincia);
+        ordine.setPaese(paese);
+        ordine.setMetodoSpedizione(metodoSped);
+        ordine.setMetodoPagamento(metodoPay);
+        ordine.setStatoOrdine("in attesa");
+        ordine.setTotale(totale);
+        ordine.setNoteOrdine(note);
+        ordine.setDataOrdine(java.time.LocalDateTime.now());
+
+        /* ========== 6. Salva ordine + righe ========== */
+        OrdineDAO dao = OrdineDAO.getInstance();
+        int ordineId = dao.doSave(ordine);           // INSERT in Ordini
+
+        if (ordineId > 0) {
+            // inserisci ogni riga
+            for (CarrelloArticolo art : carrello.values()) {
+                dao.insertRigaOrdine(
+                        ordineId,
+                        art.getBoxId(),
+                        art.getQuantita(),
+                        art.getBox().getPrezzo());
+            }
+
+            /* ========== 7. Svuota carrello e redirect ========== */
+            session.removeAttribute("carrello");
+            resp.sendRedirect(req.getContextPath()
+                    + "/jsp/confermaOrdine.jsp?id=" + ordineId);
+
+        } else {
+            req.setAttribute("msgErr", "Errore nel salvataggio dell’ordine.");
+            req.getRequestDispatcher("/jsp/checkout.jsp").forward(req, resp);
+        }
+    }
+
 }

@@ -54,7 +54,8 @@
   </div>
 
   <!-- ===== Checkout Form ===== -->
-  <form class="checkout-form" action="${pageContext.request.contextPath}/ordine" method="post">
+  <form class="checkout-form" action="${pageContext.request.contextPath}/checkout" method="post">
+  
     <fieldset class="ship-fieldset">
       <legend>Indirizzo di spedizione</legend>
 
@@ -119,7 +120,7 @@
 
     <div class="form-group">
       <label for="noteOrdine">Note per l’ordine (facoltative)</label>
-      <textarea id="noteOrdine" name="noteOrdine" rows="3"></textarea>
+      <textarea id="noteOrdine" name="note" rows="3"></textarea>
     </div>
 
     <button type="submit" class="btn-primary">Conferma ordine</button>

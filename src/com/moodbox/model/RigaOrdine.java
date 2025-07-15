@@ -8,6 +8,8 @@ public class RigaOrdine {
     private int boxId;
     private int quantita;
     private BigDecimal prezzoUnitario;
+    private String boxNome; 
+    private String imgUrl;
     
     // Costruttori
     public RigaOrdine() {}
@@ -34,6 +36,14 @@ public class RigaOrdine {
     
     public BigDecimal getPrezzoUnitario() { return prezzoUnitario; }
     public void setPrezzoUnitario(BigDecimal prezzoUnitario) { this.prezzoUnitario = prezzoUnitario; }
+    
+    public String getBoxNome() { return boxNome; }
+    public void setBoxNome(String boxNome) { this.boxNome = boxNome; }
+    
+    public String getImgUrl() { return imgUrl; }
+    public void setImgUrl(String imgUrl) { this.imgUrl = imgUrl; }
+
+
     
     // Metodo utile per calcolare il totale della riga
     public BigDecimal getTotaleRiga() {

@@ -2,8 +2,11 @@ package com.moodbox.DAO;
 
 import com.moodbox.database.DatabaseConnection;
 import com.moodbox.model.Ordine;
+import com.moodbox.model.RigaOrdine;
 
+import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,15 +62,28 @@ public class OrdineDAO {
        READ – by PK
        ============================================================== */
     public Ordine doRetrieveByKey(int id) {
-        final String sql = "SELECT * FROM Ordini WHERE id = ?";
+        final String sql = """
+            SELECT o.*, u.email
+            FROM Ordini o
+            JOIN utenti u ON o.utente_id = u.id
+            WHERE o.id = ?
+        """;
+
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return extract(rs);
+                if (rs.next()) {
+                    Ordine ordine = extract(rs); // Crea l'ordine base
+                    ordine.setEmailCliente(rs.getString("email")); // Aggiungi email
+                    return ordine;
+                }
             }
-        } catch (SQLException ex) { ex.printStackTrace(); }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
         return null;
     }
 
@@ -213,4 +229,112 @@ public class OrdineDAO {
 
         return o;
     }
+    
+    public List<Ordine> findByFiltro(LocalDate from, LocalDate to, String emailCliente) {
+    	StringBuilder sql = new StringBuilder(
+    		    "SELECT o.*, u.email FROM Ordini o JOIN utenti u ON o.utente_id = u.id WHERE 1=1");
+
+        List<Object> params = new ArrayList<>();
+
+        if (from != null) {
+            sql.append(" AND o.data_ordine >= ?");
+            params.add(Date.valueOf(from));
+        }
+        if (to != null) {
+            sql.append(" AND o.data_ordine <= ?");
+            params.add(Date.valueOf(to));
+        }
+        if (emailCliente != null && !emailCliente.isBlank()) {
+            sql.append(" AND u.email LIKE ?");
+            params.add("%" + emailCliente + "%");
+        }
+        sql.append(" ORDER BY o.data_ordine DESC");
+
+        List<Ordine> list = new ArrayList<>();
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	Ordine o = extract(rs);
+            	o.setEmailCliente(rs.getString("email")); 
+            	list.add(o);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+ // Singleton
+    private static final OrdineDAO instance = new OrdineDAO();
+
+    public static OrdineDAO getInstance() {
+        return instance;
+    }
+
+    
+    public List<RigaOrdine> findRigheByOrdineId(int ordineId) {
+        String sql = """
+            SELECT ro.*, b.nome AS boxNome, b.immagine AS imgUrl
+            FROM righe_ordine ro
+            JOIN boxes b ON ro.box_id = b.id
+            WHERE ro.ordine_id = ?
+        """;
+
+        List<RigaOrdine> righe = new ArrayList<>();
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, ordineId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    RigaOrdine r = new RigaOrdine();
+                    r.setId(rs.getInt("id"));
+                    r.setOrdineId(rs.getInt("ordine_id"));
+                    r.setBoxId(rs.getInt("box_id"));
+                    r.setQuantita(rs.getInt("quantita"));
+                    r.setPrezzoUnitario(rs.getBigDecimal("prezzo_unitario"));
+
+                    // Campi aggiuntivi per la visualizzazione
+                    r.setBoxNome(rs.getString("boxNome"));
+                    r.setImgUrl(rs.getString("imgUrl"));
+
+                    righe.add(r);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return righe;
+    }
+    public void insertRigaOrdine(int ordineId, int boxId, int quantita, BigDecimal prezzoUnitario) {
+        final String sql = """
+            INSERT INTO righe_ordine (ordine_id, box_id, quantita, prezzo_unitario)
+            VALUES (?, ?, ?, ?)
+        """;
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, ordineId);
+            ps.setInt(2, boxId);
+            ps.setInt(3, quantita);
+            ps.setBigDecimal(4, prezzoUnitario);
+
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore durante l'inserimento della riga ordine", e);
+        }
+    }
+
+
+    
 }
