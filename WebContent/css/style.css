@@ -741,49 +741,51 @@ input[type=password]{
 /*banner conferma ordine*/
 
 /* === CONFIRM ORDER – Banner + card bianca ==================== */
-.confirm-page{
-  min-height:100vh;
-  display:flex;
-  justify-content:center;       /* centra orizzontalmente */
-  align-items:flex-start;       /* in alto */
-  padding-top:60px;             /* distanza dal bordo superiore */
-  position:relative;
-  overflow:hidden;
+.confirm-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 60px;
+  position: relative;
+  overflow: hidden;
 }
 
-.confirm-page::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:url('../images/co-banner.png') center/cover no-repeat;
-  z-index:-1;                   
+.confirm-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('../images/co-banner.png') center/cover no-repeat;
+  z-index: -2;
 }
 
-.confirm-page::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  backdrop-filter:blur(4px);    /* leggero blur sopra il banner */
-  z-index:-1;
+
+
+.confirm-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(4px);
+  z-index: -1;
 }
 
-/* Card bianca */
-.confirm-box{
-  width:90%;
-  max-width:700px;
-  background:#ffffffee;         /* bianco quasi pieno (ee = 93% opaco) */
-  border-radius:12px;
-  box-shadow:0 6px 24px rgba(0,0,0,.15);
-  padding:40px 28px;
-  text-align:center;
-  color:#333;                   /* testo scuro leggibile */
+.confirm-box {
+  width: 90%;
+  max-width: 700px;
+  background: #ffffffee;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  padding: 40px 28px;
+  text-align: center;
+  color: #333;
 }
 
-.confirm-box h2{
-  color:#2e7d32;
-  margin-bottom:14px;
-  font-weight:700;
+.confirm-box h2 {
+  color: #2e7d32;
+  margin-bottom: 14px;
+  font-weight: 700;
 }
+
 
 .order-info{
   margin:25px auto;

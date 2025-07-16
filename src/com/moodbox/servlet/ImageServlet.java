@@ -39,6 +39,8 @@ public class ImageServlet extends HttpServlet {
             return;
         }
 
+       
+
         String mime = getServletContext().getMimeType(file.toString());
         resp.setContentType(mime != null ? mime : "application/octet-stream");
         Files.copy(file, resp.getOutputStream());
