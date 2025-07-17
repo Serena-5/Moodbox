@@ -7,7 +7,7 @@
         <c:when test="${not empty box}">
             <h2><c:out value="${box.nome}" /></h2>
 
-            <img src="${pageContext.request.contextPath}/images/${box.immagine}"
+            <img src="${pageContext.request.contextPath}/images_uploaded/${box.immagine}"
                  alt="${box.nome}" style="max-width:90%;height:auto; border-radius:8px;" />
 
             <p><strong>Descrizione:</strong> <c:out value="${box.descrizione}" /></p>

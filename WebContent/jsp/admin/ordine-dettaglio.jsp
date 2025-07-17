@@ -52,10 +52,12 @@
     <c:forEach var="r" items="${righe}">
       <tr>
         <td>
-  <img src="${pageContext.request.contextPath}/images/${r.imgUrl}"
+  <img src="${pageContext.request.contextPath}/images_uploaded/${r.imgUrl}"
        alt="${r.boxNome}"
        style="height:80px;width:80px;object-fit:cover;border-radius:6px;">
 </td>
+
+
 
         <td>${r.boxNome}</td>
         <td class="text-center">

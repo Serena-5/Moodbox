@@ -38,7 +38,7 @@
             <tr>
               <!-- Immagine -->
               <td>
-                <img src="${pageContext.request.contextPath}/images/${a.box.immagine}"
+                <img src="${pageContext.request.contextPath}/images_uploaded/${a.box.immagine}"
                      alt="${a.box.nome}" width="60" />
               </td>
 

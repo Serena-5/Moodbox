@@ -24,7 +24,7 @@
         <c:forEach var="riga" items="${articoli}">
           <tr>
             <td class="title">${riga.box.nome}</td>
-            <td class="img-col"><img src="${pageContext.request.contextPath}/images/${riga.box.immagine}" alt="${riga.box.nome}"></td>
+            <td class="img-col"><img src="${pageContext.request.contextPath}/images_uploaded/${riga.box.immagine}" alt="${riga.box.nome}"></td>
             <td>${riga.quantita}</td>
             <td class="right">
               <fmt:formatNumber value="${riga.box.prezzo * riga.quantita}" type="currency" currencySymbol="€"/>

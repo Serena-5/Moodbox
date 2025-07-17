@@ -98,7 +98,7 @@ public class AdminCatalogServlet extends HttpServlet {
 
             String baseDir = System.getenv().getOrDefault(
                     "MOODBOX_UPLOAD_DIR",
-                    System.getProperty("user.home") + "/moodbox_uploads");
+                    System.getProperty("user.home") + "/moodbox");
 
             Path uploadDir = Paths.get(baseDir).toAbsolutePath().normalize();
             Files.createDirectories(uploadDir);

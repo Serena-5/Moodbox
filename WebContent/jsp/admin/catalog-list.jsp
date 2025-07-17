@@ -65,8 +65,9 @@
                         <td>${it.nome}</td>
 
                         <!-- Miniatura -->
+                       
                         <td>
-                            <img src="${pageContext.request.contextPath}/images/${it.immagine}"
+                            <img src="${pageContext.request.contextPath}/images_uploaded/${it.immagine}"
                                  alt="${it.nome}" class="thumb">
                         </td>
 

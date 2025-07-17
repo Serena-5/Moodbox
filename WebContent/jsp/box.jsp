@@ -7,7 +7,7 @@
 <div class="grid">
     <c:forEach var="b" items="${boxList}">
         <div class="card">
-            <img src="${pageContext.request.contextPath}/images/${b.immagine}" alt="${b.nome}" style="max-width:100%; height:auto;" />
+            <img src="${pageContext.request.contextPath}/images_uploaded/${b.immagine}" alt="${b.nome}" style="max-width:100%; height:auto;" />
 
             <h3><c:out value="${b.nome}" /></h3>
             <p><c:out value="${b.descrizione}" /></p>
