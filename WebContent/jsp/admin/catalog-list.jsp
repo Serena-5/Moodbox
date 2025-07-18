@@ -10,23 +10,7 @@
     <!-- CSS principale -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 
-    <style>
-        table.catalog { width:100%; border-collapse:collapse; margin-top:1rem; }
-        table.catalog th, table.catalog td { padding:.6rem; border:1px solid #bbb; }
-        table.catalog th { background:#f5f5f5; }
-        .right       { text-align:right; }
-        .text-center { text-align:center; }
-        .thumb       { height:60px; object-fit:cover; }
-
-        /* bottoni compatti */
-        .btn-small {
-            font-size:.8rem; padding:.15rem .45rem;
-            border:none; border-radius:4px; cursor:pointer;
-        }
-        .btn-small.edit   { background:#0777d9; color:#fff; }
-        .btn-small.delete { background:#d9534f; color:#fff; } /* rosso: disattiva */
-        .btn-small.enable { background:#5cb85c; color:#fff; } /* verde: riattiva */
-    </style>
+    
 </head>
 <body>
 

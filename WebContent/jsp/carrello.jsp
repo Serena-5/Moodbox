@@ -97,3 +97,4 @@
 
   </c:choose>
 </div>
+<%@ include file="/jsp/partials/footer.jsp" %>

@@ -58,3 +58,4 @@
     </div>
   </div>
 </section>
+<%@ include file="/jsp/partials/footer.jsp" %>

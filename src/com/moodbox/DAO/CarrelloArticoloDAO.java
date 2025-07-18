@@ -10,7 +10,7 @@ import java.util.List;
 public class CarrelloArticoloDAO {
 
     public boolean doSave(CarrelloArticolo carrelloArticolo) {
-        String sql = "INSERT INTO Carrello_Articoli (carrello_id, box_id, quantità) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO carrello_articoli (carrello_id, box_id, quantità) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, carrelloArticolo.getCarrelloId());
@@ -24,7 +24,7 @@ public class CarrelloArticoloDAO {
     }
 
     public CarrelloArticolo doRetrieveByKey(int carrelloId, int boxId) {
-        String sql = "SELECT * FROM Carrello_Articoli WHERE carrello_id = ? AND box_id = ?";
+        String sql = "SELECT * FROM carrello_articoli WHERE carrello_id = ? AND box_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, carrelloId);
@@ -45,7 +45,7 @@ public class CarrelloArticoloDAO {
 
     public List<CarrelloArticolo> doRetrieveByCarrelloId(int carrelloId) {
         List<CarrelloArticolo> list = new ArrayList<>();
-        String sql = "SELECT * FROM Carrello_Articoli WHERE carrello_id = ?";
+        String sql = "SELECT * FROM carrello_articoli WHERE carrello_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, carrelloId);
@@ -64,7 +64,7 @@ public class CarrelloArticoloDAO {
     }
 
     public boolean doUpdate(CarrelloArticolo carrelloArticolo) {
-        String sql = "UPDATE Carrello_Articoli SET quantità = ? WHERE carrello_id = ? AND box_id = ?";
+        String sql = "UPDATE carrello_articoli SET quantità = ? WHERE carrello_id = ? AND box_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, carrelloArticolo.getQuantita());
@@ -78,7 +78,7 @@ public class CarrelloArticoloDAO {
     }
 
     public boolean doDelete(int carrelloId, int boxId) {
-        String sql = "DELETE FROM Carrello_Articoli WHERE carrello_id = ? AND box_id = ?";
+        String sql = "DELETE FROM carrello_articoli WHERE carrello_id = ? AND box_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, carrelloId);
@@ -89,4 +89,29 @@ public class CarrelloArticoloDAO {
         }
         return false;
     }
+    public int totaleQuantita(int carrelloId) {
+        String sql = "SELECT COALESCE(SUM(quantità), 0) FROM carrello_articoli WHERE carrello_id = ?";
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, carrelloId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public boolean doDeleteAllByCarrelloId(int carrelloId) {
+        String sql = "DELETE FROM carrello_articoli WHERE carrello_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, carrelloId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 }

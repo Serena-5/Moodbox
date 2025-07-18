@@ -1,175 +1,176 @@
 package com.moodbox.servlet;
 
-import com.moodbox.DAO.CarrelloDAO;
+import com.moodbox.DAO.BoxDAO;
 import com.moodbox.DAO.CarrelloArticoloDAO;
+import com.moodbox.DAO.CarrelloDAO;
 import com.moodbox.model.Carrello;
 import com.moodbox.model.CarrelloArticolo;
 import com.moodbox.model.Utente;
-import com.moodbox.DAO.BoxDAO;
-
-
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
+
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @WebServlet("/carrello")
 public class CarrelloServlet extends HttpServlet {
-    
-	private static final long serialVersionUID = 1L;
-	private CarrelloDAO carrelloDAO;
-    private CarrelloArticoloDAO carrelloArticoloDAO;
+    private static final long serialVersionUID = 1L;
+    private CarrelloDAO carrelloDAO;
+    private CarrelloArticoloDAO articoloDAO;
     private BoxDAO boxDAO;
-
 
     @Override
     public void init() throws ServletException {
         carrelloDAO = new CarrelloDAO();
-        carrelloArticoloDAO = new CarrelloArticoloDAO();
+        articoloDAO = new CarrelloArticoloDAO();
         boxDAO = new BoxDAO();
     }
 
-    
-
+    /* --------------------- GESTIONE POST ------------------------ */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        
-        String action = request.getParameter("action");
-        HttpSession session = request.getSession();
-        
-        if ("add".equals(action)) {
-            aggiungiAlCarrello(request, session);
-        } else if ("update".equals(action)) {
-            aggiornaQuantita(request, session);
-        } else if ("remove".equals(action)) {
-            rimuoviDalCarrello(request, session);
+
+        String action = req.getParameter("action");
+        HttpSession session = req.getSession();
+        Carrello carrello = getOrCreateCarrello(session);
+
+        if ("ajax-add".equals(action)) {
+            gestisciAggiuntaAjax(req, resp, carrello, session);
+            return;
         }
-        
-        response.sendRedirect(request.getContextPath() + "/carrello");
-    }@Override
-            protected void doGet(HttpServletRequest request, HttpServletResponse response)
-                    throws ServletException, IOException {
 
-                HttpSession session = request.getSession();
-                Carrello carrello = getOrCreateCarrello(session);
-
-                if (carrello != null) {
-                    List<CarrelloArticolo> articoli =
-                            carrelloArticoloDAO.doRetrieveByCarrelloId(carrello.getId());
-
-                    /* collega il Box a ogni articolo */
-                    java.math.BigDecimal totale = java.math.BigDecimal.ZERO;
-                    for (CarrelloArticolo art : articoli) {
-                        art.setBox(boxDAO.doRetrieveByKey(art.getBoxId()));
-                        /* somma totale carrello */
-                        if (art.getBox() != null) {
-                            java.math.BigDecimal sub = art.getBox().getPrezzo()
-                                                          .multiply(java.math.BigDecimal.valueOf(art.getQuantita()));
-                            totale = totale.add(sub);
-                        }
-                    }
-
-                    request.setAttribute("articoli", articoli);
-                    request.setAttribute("totale",   totale);
-                }
-
-                request.getRequestDispatcher("/jsp/carrello.jsp").forward(request, response);
-            }
-
-
-    private void aggiungiAlCarrello(HttpServletRequest request, HttpSession session) {
         try {
-            int boxId = Integer.parseInt(request.getParameter("boxId"));
-            int quantita = Integer.parseInt(request.getParameter("quantita"));
-            
-            Carrello carrello = getOrCreateCarrello(session);
-            if (carrello == null) return;
-            
-            // Verifica se il prodotto è già nel carrello
-            CarrelloArticolo esistente = carrelloArticoloDAO.doRetrieveByKey(carrello.getId(), boxId);
-            
-            if (esistente != null) {
-                // Aggiorna la quantità
-                esistente.setQuantita(esistente.getQuantita() + quantita);
-                carrelloArticoloDAO.doUpdate(esistente);
-            } else {
-                // Aggiungi nuovo articolo
-                CarrelloArticolo nuovo = new CarrelloArticolo();
-                nuovo.setCarrelloId(carrello.getId());
-                nuovo.setBoxId(boxId);
-                nuovo.setQuantita(quantita);
-                carrelloArticoloDAO.doSave(nuovo);
+            int boxId = Integer.parseInt(req.getParameter("boxId"));
+
+            switch (action) {
+                case "add" -> {
+                    int quantita = Integer.parseInt(req.getParameter("quantita"));
+                    aggiungiAlCarrello(carrello, boxId, quantita);
+                }
+                case "update" -> {
+                    int quantita = Integer.parseInt(req.getParameter("quantita"));
+                    aggiornaQuantita(carrello, boxId, quantita);
+                }
+                case "remove" -> articoloDAO.doDelete(carrello.getId(), boxId);
             }
+
+            aggiornaContatore(session, carrello.getId());
+            resp.sendRedirect(req.getContextPath() + "/carrello");
+
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parametri non validi");
         }
     }
 
-    private void aggiornaQuantita(HttpServletRequest request, HttpSession session) {
-        try {
-            int boxId = Integer.parseInt(request.getParameter("boxId"));
-            int quantita = Integer.parseInt(request.getParameter("quantita"));
-            
-            Carrello carrello = getOrCreateCarrello(session);
-            if (carrello == null) return;
-            
-            if (quantita > 0) {
-                CarrelloArticolo articolo = carrelloArticoloDAO.doRetrieveByKey(carrello.getId(), boxId);
-                if (articolo != null) {
-                    articolo.setQuantita(quantita);
-                    carrelloArticoloDAO.doUpdate(articolo);
+    /* --------------------- GESTIONE GET ------------------------ */
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        HttpSession session = req.getSession();
+        Carrello carrello = getOrCreateCarrello(session);
+
+        if (carrello != null) {
+            List<CarrelloArticolo> articoli = articoloDAO.doRetrieveByCarrelloId(carrello.getId());
+            BigDecimal totale = BigDecimal.ZERO;
+            int count = 0;
+
+            for (CarrelloArticolo a : articoli) {
+                a.setBox(boxDAO.doRetrieveByKey(a.getBoxId()));
+                if (a.getBox() != null) {
+                    BigDecimal sub = a.getBox().getPrezzo().multiply(BigDecimal.valueOf(a.getQuantita()));
+                    totale = totale.add(sub);
+                    count += a.getQuantita();
                 }
-            } else {
-                carrelloArticoloDAO.doDelete(carrello.getId(), boxId);
             }
-        } catch (NumberFormatException e) {
+
+            session.setAttribute("carrelloCount", count);
+            req.setAttribute("articoli", articoli);
+            req.setAttribute("totale", totale);
+        }
+
+        req.getRequestDispatcher("/jsp/carrello.jsp").forward(req, resp);
+    }
+
+    /* --------------------- METODI DI SUPPORTO ------------------------ */
+
+    private void gestisciAggiuntaAjax(HttpServletRequest req, HttpServletResponse resp, Carrello carrello, HttpSession session)
+            throws IOException {
+        try {
+            int boxId = Integer.parseInt(req.getParameter("boxId"));
+            int quantita = Integer.parseInt(req.getParameter("quantita"));
+            if (quantita <= 0) quantita = 1;
+
+            aggiungiAlCarrello(carrello, boxId, quantita);
+
+            // Leggi direttamente dal database il nuovo totale
+            int count = articoloDAO.totaleQuantita(carrello.getId());
+            session.setAttribute("carrelloCount", count); // aggiornamento sessione se serve
+
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            resp.getWriter().write("{\"cartCount\":" + count + "}");
+
+        } catch (Exception e) {
             e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore nel server");
         }
     }
 
-    private void rimuoviDalCarrello(HttpServletRequest request, HttpSession session) {
-        try {
-            int boxId = Integer.parseInt(request.getParameter("boxId"));
-            
-            Carrello carrello = getOrCreateCarrello(session);
-            if (carrello != null) {
-                carrelloArticoloDAO.doDelete(carrello.getId(), boxId);
-            }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+    private void aggiungiAlCarrello(Carrello carrello, int boxId, int quantita) {
+        CarrelloArticolo esistente = articoloDAO.doRetrieveByKey(carrello.getId(), boxId);
+        if (esistente != null) {
+            esistente.setQuantita(esistente.getQuantita() + quantita);
+            articoloDAO.doUpdate(esistente);
+        } else {
+            CarrelloArticolo nuovo = new CarrelloArticolo();
+            nuovo.setCarrelloId(carrello.getId());
+            nuovo.setBoxId(boxId);
+            nuovo.setQuantita(quantita);
+            articoloDAO.doSave(nuovo);
         }
+    }
+
+    private void aggiornaQuantita(Carrello carrello, int boxId, int quantita) {
+        if (quantita > 0) {
+            CarrelloArticolo articolo = articoloDAO.doRetrieveByKey(carrello.getId(), boxId);
+            if (articolo != null) {
+                articolo.setQuantita(quantita);
+                articoloDAO.doUpdate(articolo);
+            }
+        } else {
+            articoloDAO.doDelete(carrello.getId(), boxId);
+        }
+    }
+
+    private void aggiornaContatore(HttpSession session, int carrelloId) {
+        int totale = articoloDAO.totaleQuantita(carrelloId);
+        session.setAttribute("carrelloCount", totale);
     }
 
     private Carrello getOrCreateCarrello(HttpSession session) {
         Utente utente = (Utente) session.getAttribute("utente");
         String sessionId = session.getId();
-        
-        // Cerca carrello esistente per session ID
         Carrello carrello = carrelloDAO.doRetrieveBySessionId(sessionId);
-        
+
         if (carrello == null) {
-            // Crea nuovo carrello
             carrello = new Carrello();
             carrello.setSessionId(sessionId);
-            if (utente != null) {
-                carrello.setUtenteId(utente.getId());
-            }
-            
-            if (carrelloDAO.doSave(carrello)) {
-                carrello = carrelloDAO.doRetrieveBySessionId(sessionId);
-            }
-        } else if (utente != null && carrello.getUtenteId() == null) {
-            // Associa carrello anonimo all'utente loggato
+            if (utente != null) carrello.setUtenteId(utente.getId());
+
+            carrelloDAO.doSave(carrello);
+            carrello = carrelloDAO.doRetrieveBySessionId(sessionId);
+        }
+
+        if (utente != null && carrello.getUtenteId() == null) {
             carrello.setUtenteId(utente.getId());
             carrelloDAO.doUpdate(carrello);
         }
-        
+
         return carrello;
     }
 }

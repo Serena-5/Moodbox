@@ -13,13 +13,13 @@
             <p><strong>Descrizione:</strong> <c:out value="${box.descrizione}" /></p>
             <p><strong>Prezzo:</strong> € <c:out value="${box.prezzo}" /></p>
 
-            <form action="${pageContext.request.contextPath}/carrello" method="post" style="margin-top:15px;">
-                <input type="hidden" name="action" value="add" />
-                <input type="hidden" name="boxId" value="${box.id}" />
-                Quantità:
-                <input type="number" name="quantita" value="1" min="1" style="width:70px;" />
-                <button type="submit">Aggiungi al carrello</button>
-            </form>
+            <form class="add-to-cart-form" data-box-id="${box.id}" style="margin-top:15px;">
+  Quantità:
+  <input type="number" name="quantita" value="1" min="1" style="width:70px;" />
+  <button type="submit">Aggiungi al carrello</button>
+</form>
+            
+            
         </c:when>
 
         <c:otherwise>
@@ -27,5 +27,7 @@
         </c:otherwise>
     </c:choose>
 </div>
+<script src="${pageContext.request.contextPath}/scripts/cart.js"></script>
 
+<%@ include file="/jsp/partials/footer.jsp" %>
 

@@ -152,10 +152,20 @@ public class CheckoutServlet extends HttpServlet {
                         art.getBox().getPrezzo());
             }
 
-            /* ========== 7. Svuota carrello e redirect ========== */
+           
+         // 7. Svuota carrello lato DB e sessione
+            Carrello carrelloDB = carrelloDAO.doRetrieveBySessionId(session.getId());
+            if (carrelloDB != null) {
+                carrelloArticoloDAO.doDeleteAllByCarrelloId(carrelloDB.getId());
+            }
+            
             session.removeAttribute("carrello");
-            resp.sendRedirect(req.getContextPath()
-                    + "/jsp/confermaOrdine.jsp?id=" + ordineId);
+            session.setAttribute("carrelloCount", 0);
+            resp.sendRedirect(req.getContextPath() + "/jsp/confermaOrdine.jsp?id=" + ordineId);
+
+
+            
+
 
         } else {
             req.setAttribute("msgErr", "Errore nel salvataggio dell’ordine.");

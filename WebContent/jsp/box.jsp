@@ -2,9 +2,11 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="partials/header.jsp" %>
 
-<h2>Catalogo MoodBox</h2>
+<h2 class="catalog-title">Catalogo MoodBox</h2>
+
 
 <div class="grid">
+
     <c:forEach var="b" items="${boxList}">
         <div class="card">
             <img src="${pageContext.request.contextPath}/images_uploaded/${b.immagine}" alt="${b.nome}" style="max-width:100%; height:auto;" />
@@ -14,12 +16,10 @@
             <p class="price">€ <c:out value="${b.prezzo}" /></p>
 
             <!-- Form Aggiungi -->
-            <form action="${pageContext.request.contextPath}/carrello" method="post">
-                <input type="hidden" name="action"   value="add" />
-                <input type="hidden" name="boxId"    value="${b.id}" />
-                <input type="hidden" name="quantita" value="1" />
-                <button type="submit">Aggiungi al carrello</button>
-            </form>
+           <form class="add-to-cart-form" data-box-id="${b.id}">
+    <button type="submit">Aggiungi al carrello</button>
+</form>
+           
 
             <!-- Link ai dettagli -->
             <p>
@@ -28,3 +28,9 @@
         </div>
     </c:forEach>
 </div>
+<script>
+  const ctxPath = '<%= request.getContextPath() %>';
+</script>
+
+
+<%@ include file="/jsp/partials/footer.jsp" %>

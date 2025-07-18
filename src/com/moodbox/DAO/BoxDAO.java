@@ -10,7 +10,7 @@ import java.util.List;
 public class BoxDAO {
     
     public boolean doSave(Box box) {
-    	String sql = "INSERT INTO Boxes (nome, descrizione, prezzo, disponibile, immagine) VALUES (?, ?, ?, ?, ?)";
+    	String sql = "INSERT INTO boxes (nome, descrizione, prezzo, disponibile, immagine) VALUES (?, ?, ?, ?, ?)";
     		try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -29,7 +29,7 @@ public class BoxDAO {
     }
 
     public Box doRetrieveByKey(int id) {
-        String sql = "SELECT * FROM Boxes WHERE id = ?";
+        String sql = "SELECT * FROM boxes WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -56,7 +56,7 @@ public class BoxDAO {
 
     public List<Box> doRetrieveAll() {
         List<Box> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Boxes";
+        String sql = "SELECT * FROM boxes";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -82,7 +82,7 @@ public class BoxDAO {
 
     public List<Box> doRetrieveAvailable() {
         List<Box> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Boxes WHERE disponibile = TRUE";
+        String sql = "SELECT * FROM boxes WHERE disponibile = TRUE";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -107,7 +107,7 @@ public class BoxDAO {
     }
 
     public boolean doUpdate(Box box) {
-        String sql = "UPDATE Boxes SET nome=?, descrizione=?, prezzo=?, disponibile=?, immagine=? WHERE id=?";
+        String sql = "UPDATE boxes SET nome=?, descrizione=?, prezzo=?, disponibile=?, immagine=? WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -127,7 +127,7 @@ public class BoxDAO {
 
 
     public boolean doDelete(int id) {
-        String sql = "DELETE FROM Boxes WHERE id=?";
+        String sql = "DELETE FROM boxes WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 

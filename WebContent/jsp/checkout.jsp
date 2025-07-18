@@ -32,24 +32,25 @@
           </tr>
         </c:forEach>
       </tbody>
-      <tfoot>
-        <tr>
-          <th colspan="3" class="right">Totale prodotti</th>
-          <th class="right">
-            <fmt:formatNumber value="${totaleProdotti}" type="currency" currencySymbol="€"/>
-          </th>
-        </tr>
-        <tr>
-          <th colspan="3" class="right">Spedizione</th>
-          <th class="right">€ 5,00</th>
-        </tr>
-        <tr>
-          <th colspan="3" class="right grand-total">Totale ordine</th>
-          <th class="right grand-total">
-            <fmt:formatNumber value="${totaleProdotti + 5}" type="currency" currencySymbol="€"/>
-          </th>
-        </tr>
-      </tfoot>
+    <tfoot>
+  <tr>
+    <th colspan="3" class="right">Totale prodotti</th>
+    <th class="right">
+      <span id="totale-prodotti" data-val="${totaleProdotti}">
+        <fmt:formatNumber value="${totaleProdotti}" type="currency" currencySymbol="€"/>
+      </span>
+    </th>
+  </tr>
+  <tr>
+    <th colspan="3" class="right">Spedizione</th>
+    <th class="right">€ <span id="costo-spedizione">0.00</span></th>
+  </tr>
+  <tr>
+    <th colspan="3" class="right grand-total">Totale ordine</th>
+    <th class="right grand-total">€ <span id="totale-ordine"></span></th>
+  </tr>
+</tfoot>
+    
     </table>
   </div>
 
@@ -111,10 +112,12 @@
 
       <div class="form-group">
         <label for="metodoSpedizione">Metodo di spedizione *</label>
-        <select id="metodoSpedizione" name="metodoSpedizione" required>
-          <option value="Standard">Standard (3‑5 gg) – € 5,00</option>
-          <option value="Express">Express (24‑48 h) – € 9,90</option>
-        </select>
+       <select id="spedizione" name="metodoSpedizione" required>
+  <option value="Standard" data-costo="5.00">Standard (3‑5 gg) – € 5,00</option>
+  <option value="Express" data-costo="9.90">Express (24‑48 h) – € 9,90</option>
+</select>
+
+        
       </div>
     </div>
 
@@ -127,4 +130,5 @@
   </form>
 </section>
 
+<%@ include file="/jsp/partials/footer.jsp" %>
 

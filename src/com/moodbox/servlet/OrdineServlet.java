@@ -1,5 +1,7 @@
 package com.moodbox.servlet;
 
+import com.moodbox.DAO.CarrelloArticoloDAO;
+import com.moodbox.DAO.CarrelloDAO;
 import com.moodbox.DAO.OrdineDAO;
 import com.moodbox.DAO.RigaOrdineDAO;
 import com.moodbox.model.*;
@@ -124,9 +126,18 @@ public class OrdineServlet extends HttpServlet {
             rigaOrdineDAO.doSave(riga);
         }
 
-        /* ─── 6. Svuota il carrello e redirect alla pagina conferma ────── */
+        /* ─── 6. Svuota il carrello dal DB e dalla sessione ────── */
+        CarrelloDAO carrelloDAO = new CarrelloDAO();
+        CarrelloArticoloDAO articoloDAO = new CarrelloArticoloDAO();
+
+        Carrello carrelloUtente = carrelloDAO.doRetrieveBySessionId(session.getId());
+        if (carrelloUtente != null) {
+            articoloDAO.doDeleteAllByCarrelloId(carrelloUtente.getId());
+        }
+
         session.removeAttribute("carrello");
-        session.setAttribute("ordineConfermato", ordine); // per conferma visuale
+        session.setAttribute("carrelloCount", 0); // aggiorna contatore visivo
+        session.setAttribute("ordineConfermato", ordine);
 
         response.sendRedirect(request.getContextPath()
                                + "/jsp/confermaOrdine.jsp?id=" + ordineId);

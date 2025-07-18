@@ -42,8 +42,15 @@
 
     <!-- spazio per messaggi JS -->
     <div id="error-message" class="errore"></div>
+<p style="text-align: center; margin-top: 10px;">
+  <a href="${pageContext.request.contextPath}/home" style="color: white; text-decoration: underline;">
+    Torna alla home
+  </a>
+</p>
+
   </form>
 </section>
+<script src="${pageContext.request.contextPath}/scripts/login-validation.js"></script>
 
 </body>
 </html>

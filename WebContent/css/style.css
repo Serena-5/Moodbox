@@ -522,7 +522,7 @@ footer {
 
 /* ─── Bottone principale ────────────── */
 .btn-primary{
-  display:block;
+  display:inline-block;
   width:100%;
   padding:14px;
   background:#0777D9;
@@ -699,10 +699,14 @@ html,body{
   box-shadow:0 8px 32px rgba(0,0,0,.25);
   color:#333;
 }
-.glass h2{
-  text-align:center;
-  margin-bottom:24px;
-  color:#e91e63;
+
+
+.glass h2 {
+  color: #6930c3; /* lilla */
+  text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3); /* ombra scura */
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
 }
 
 /* campi */
@@ -725,13 +729,14 @@ input[type=password]{
   padding:12px;
   border:none;
   border-radius:8px;
-  background:#0078d7;
+  background: linear-gradient(90deg, #A075E6, #0078d7);
+  transition: 0.2s ease;
   color:#fff;
   font-weight:600;
   cursor:pointer;
   transition:.25s;
 }
-.btn:hover{background:#005fb3}
+.btn:hover{background:#005fb3; transform: translateY(-2px);}
 
 /* messaggi */
 .errore  {color:#e00;font-size:.9rem;margin-top:12px}
@@ -851,8 +856,105 @@ input[type=password]{
             cursor: pointer;
         }
         .btn-small.edit   { background: #0777d9; color: #fff; }
-        .btn-small.delete { background: #d9534f; color: #fff; } /* rosso: disattiva */
-        .btn-small.enable { background: #5cb85c; color: #fff; } /* verde: riattiva */
+        .btn-small.delete { background: #5cb85c; color: #fff; } /* rosso: disattiva */
+        .btn-small.enable { background: #d9534f; color: #fff; } /* verde: riattiva */
 
 
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-family: sans-serif;
+  font-size: 15px;
+  z-index: 9999;
+
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Wrapper contenitore user + cart */
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* distanza tra icone */
+}
+
+/* Dropdown utente */
+.user-dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Icona utente */
+.user-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  cursor: pointer;
+  display: block;
+}
+
+/* Menu a tendina */
+.dropdown-menu {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  display: none;
+  flex-direction: column;
+  min-width: 160px;
+  z-index: 1000;
+}
+
+/* Mostra dropdown all'hover o con classe .open */
+.user-dropdown:hover .dropdown-menu,
+.user-dropdown.open .dropdown-menu {
+  display: flex;
+}
+
+/* Stile dei link nella tendina */
+.dropdown-menu a {
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: #333;
+  transition: background 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f0f0f0;
+}
+
+.admin-link {
+  color: #fff;
+  margin-right: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.admin-link:hover {
+  color: #9BE2F2;
+}
+
+
+.catalog-title {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #126DA6;
+}
 

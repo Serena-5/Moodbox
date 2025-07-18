@@ -14,7 +14,7 @@
 <body>
 
 <section class="banner">
-  <form class="glass" action="${pageContext.request.contextPath}/register" method="post">
+  <form class="glass" action="${pageContext.request.contextPath}/register" method="post" onsubmit="return validateRegister()">
     <h2>Registrazione</h2>
 
     <!-- messaggi lato server -->
@@ -49,12 +49,25 @@
 
     <button class="btn" type="submit">Registrati</button>
 
+    <!-- Messaggi JS -->
+    <div id="error-message" class="errore"></div>
+
     <p style="margin-top:20px;font-size:.9rem;text-align:center">
       Hai già un account?
       <a href="${pageContext.request.contextPath}/login">Accedi</a>
     </p>
+    <p style="text-align: center; margin-top: 10px;">
+  <a href="${pageContext.request.contextPath}/home" style="color: white; text-decoration: underline;">
+    Torna alla home
+  </a>
+</p>
+    
+    
   </form>
 </section>
+
+<!-- Script validazione -->
+<script src="${pageContext.request.contextPath}/scripts/register-validation.js"></script>
 
 </body>
 </html>

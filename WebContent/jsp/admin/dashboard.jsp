@@ -22,7 +22,9 @@
                value="${fn:escapeXml(param.cliente)}"
                class="form-control" placeholder="utente@example.com" />
     </label>
+    <p>
     <button class="btn btn-primary" type="submit">Filtra</button>
+    </p>
 </form>
 
 <table class="table table-striped table-hover responsive-table">
@@ -46,7 +48,7 @@
                 <td>${o.totale}</td>
                 <td>
                     <a href="ordine?id=${o.id}"
-                       class="btn btn-sm btn-outline-secondary">🍃</a>
+                       class="btn btn-sm btn-outline-secondary">📝</a>
                 </td>
             </tr>
         </c:forEach>
