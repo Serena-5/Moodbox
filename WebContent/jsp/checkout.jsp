@@ -3,6 +3,10 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ include file="partials/header.jsp" %>
 
+<script>
+  document.body.classList.add('catalogo-moodbox-bg');
+</script>
+ 
 <section class="checkout-wrapper">
   <!-- ===== Heading ===== -->
   <div class="checkout-head">
@@ -107,18 +111,32 @@
         <label for="metodoPagamento">Metodo di pagamento *</label>
         <select id="metodoPagamento" name="metodoPagamento" required>
           <option value="PayPal">PayPal</option>
+          <option value="Carta">Carta di Credito</option>
         </select>
       </div>
 
       <div class="form-group">
         <label for="metodoSpedizione">Metodo di spedizione *</label>
-       <select id="spedizione" name="metodoSpedizione" required>
-  <option value="Standard" data-costo="5.00">Standard (3‑5 gg) – € 5,00</option>
-  <option value="Express" data-costo="9.90">Express (24‑48 h) – € 9,90</option>
-</select>
-
-        
+        <select id="spedizione" name="metodoSpedizione" required>
+          <option value="Standard" data-costo="5.00">Standard (3‑5 gg) – € 5,00</option>
+          <option value="Express" data-costo="9.90">Express (24‑48 h) – € 9,90</option>
+        </select>
       </div>
+    </div>
+
+    <!-- Blocchi dati carta: dopo la select del metodo di pagamento -->
+    <div id="card-form" style="display:none; margin-top:12px;">
+      <label for="cardNumber">Numero Carta:</label>
+      <input type="text" id="cardNumber" name="cardNumber" maxlength="19" /><br/>
+
+      <label for="cardName">Nome Intestatario:</label>
+      <input type="text" id="cardName" name="cardName" /><br/>
+
+      <label for="cardExpiry">Scadenza (MM/AA):</label>
+      <input type="text" id="cardExpiry" name="cardExpiry" maxlength="5" placeholder="MM/AA" /><br/>
+
+      <label for="cardCVC">CVC:</label>
+      <input type="text" id="cardCVC" name="cardCVC" maxlength="4" /><br/>
     </div>
 
     <div class="form-group">
@@ -132,3 +150,14 @@
 
 <%@ include file="/jsp/partials/footer.jsp" %>
 
+<!-- SCRIPT PER MOSTRARE/NASCONDERE I CAMPI CARTA -->
+<script>
+  document.getElementById('metodoPagamento').addEventListener('change', function() {
+    var cardForm = document.getElementById('card-form');
+    cardForm.style.display = (this.value === 'Carta') ? 'block' : 'none';
+  });
+  // Stato iniziale:
+  if(document.getElementById('metodoPagamento').value === 'Carta') {
+    document.getElementById('card-form').style.display = 'block';
+  }
+</script>

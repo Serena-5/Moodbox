@@ -2,6 +2,10 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="partials/header.jsp" %>
 
+<script>
+  document.body.classList.add('catalogo-moodbox-bg');
+</script>
+
 <h2 class="catalog-title">Catalogo MoodBox</h2>
 
 

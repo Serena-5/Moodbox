@@ -64,10 +64,34 @@ public class UtenteDAO {
         }
         return null;
     }
+    
+    public Utente doRetrieveByEmail(String email) {
+        if (email == null) return null;
+        Utente u = null;
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String sql = "SELECT * FROM Utenti WHERE email = ? LIMIT 1";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                u = new Utente(); // <-- qui solo "u = ..." NON "Utente u = ..."
+                u.setId(rs.getInt("id")); 
+                u.setEmail(rs.getString("email"));
+                u.setPassword(rs.getString("passw"));
+                u.setNome(rs.getString("nome"));
+                u.setCognome(rs.getString("cognome"));
+                u.setRuolo(rs.getString("ruolo"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return u;
+    }
 
+    
     public Utente doRetrieveByCredentials(String email, String password) {
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "SELECT * FROM utenti WHERE email = ? AND passw = ?";
+            String sql = "SELECT * FROM Utenti WHERE email = ? AND passw = ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, email);
             ps.setString(2, hashPassword(password)); // ✅ qui applichi l'hash
@@ -86,6 +110,8 @@ public class UtenteDAO {
         }
         return null;
     }
+    
+    
 
 
     // Recupero di tutti gli utenti

@@ -2,6 +2,10 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="partials/header.jsp" %>
 
+<script>
+  document.body.classList.add('catalogo-moodbox-bg');
+</script>
+
 <div class="container">
   <h2>Il tuo carrello</h2>
 

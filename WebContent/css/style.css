@@ -49,19 +49,27 @@ a:hover {
 }
 
 /* === BOTTONI === */
-button {
-  background-color: #0777D9;
+button,
+.btn,
+.btn-primary,
+.button {
+  background: #0777d9;
   color: white;
   border: none;
   padding: 0.6rem 1.2rem;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background 0.3s, transform 0.18s cubic-bezier(.42,.09,.45,1.01);
+  font-size: 1rem;
 }
 
-button:hover {
-  background-color: #1BA0F2;
+button:hover,
+.btn:hover,
+.btn-primary:hover,
+.button:hover {
+  transform: translateY(-4px);
 }
+
 
 /* === CARD PRODOTTO === */
 .grid {
@@ -82,6 +90,13 @@ button:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.04);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  z-index: 2;
 }
 
 .card img {
@@ -111,7 +126,7 @@ th, td {
 }
 
 th {
-  background-color: #9BE2F2;
+  background-color: #ede6fa;
 }
 
 /* === FORM === */
@@ -247,7 +262,7 @@ footer {
 .cart-count {
     font-weight: bold;
     font-size: 0.9rem;
-    background-color: #cc3333;
+    background-color: #a075e6;
     color: white;
     border-radius: 50%;
     padding: 2px 6px;
@@ -462,7 +477,7 @@ footer {
   border-bottom:1px solid #e2e5ea;
 }
 .cart-table th{
-  background:#f4f7fb;
+  background: #FFFFFF;
   color:#126DA6;
 }
 .cart-table .img-col img{
@@ -487,7 +502,7 @@ footer {
 .checkout-form legend{
   padding:0 8px;
   font-weight:600;
-  color:#0C8BE8;
+  color:#6930c3;
 }
 .form-group{
   margin-bottom:18px;
@@ -534,6 +549,8 @@ footer {
   cursor:pointer;
   transition:background .25s;
 }
+
+
 .btn-primary:hover{
   background:#1BA0F2;
 }
@@ -864,7 +881,7 @@ input[type=password]{
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #28a745;
+  background-color:#a075e6;
   color: white;
   padding: 12px 18px;
   border-radius: 6px;
@@ -882,6 +899,27 @@ input[type=password]{
 .toast.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+.toast-msg {
+  display: none;
+  position: fixed;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #22a65e;
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 14px;
+  font-size: 1.12em;
+  box-shadow: 0 4px 18px rgba(20,50,70,0.12);
+  z-index: 9999;
+  opacity: 0.98;
+}
+
+.toast-msg.show {
+  display: block;
+  animation: toastInOut 3s linear;
 }
 
 /* Wrapper contenitore user + cart */
@@ -958,3 +996,57 @@ input[type=password]{
   color: #126DA6;
 }
 
+body.catalogo-moodbox-bg{
+  background-color: #faf7ff !important;
+}
+
+@media (max-width: 900px) {
+  .card {
+    width: 100%;
+  }
+  .card img {
+    max-height: 160px;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+}
+
+.cart-table thead tr th {
+  background: #ede6fa !important;
+}
+
+.cart-table tfoot tr:last-child th {
+  background: #ede6fa !important;
+}
+
+.confirm-box h2{
+  color:  #6930c3;
+}
+.confirm-box .btn-row {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.confirm-box .btn-row .button {
+  display: inline-block;
+  padding: 10px 32px;
+  font-size: 1rem;
+  border-radius: 0;
+  font-weight: 600;
+  background: linear-gradient(90deg, #A075E6, #0078d7);
+  color: #fff;
+  border: none;
+  transition: background 0.3s;
+  box-shadow: 0 2px 8px rgba(100,60,200,0.08);
+}
+
+.confirm-box .btn-row .button:hover {
+  background: linear-gradient(90deg, #7b51b8, #005fb3); /* Variante più scura al hover */
+  color: #fff;
+}
+
+.forgot-link {
+  color: #6930c3;  
+}

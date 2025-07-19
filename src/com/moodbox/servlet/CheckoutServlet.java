@@ -116,6 +116,16 @@ public class CheckoutServlet extends HttpServlet {
         String metodoPay  = req.getParameter("metodoPagamento");
         String note       = req.getParameter("note");
 
+        // ========== 3b. Leggi dati carta solo se scelto "Carta" ==========
+        if ("Carta".equals(metodoPay)) {
+            String cardNumber = req.getParameter("cardNumber");
+            String cardName   = req.getParameter("cardName");
+            String cardExpiry = req.getParameter("cardExpiry");
+            String cardCVC    = req.getParameter("cardCVC");
+            // Non salvarli!  
+            // Se vuoi, puoi aggiungere controlli fittizi o logiche di validazione
+        }
+
         /* ========== 4. Calcola il totale carrello ========== */
         BigDecimal totale = carrello.values().stream()
             .map(r -> r.getBox().getPrezzo()
@@ -152,8 +162,7 @@ public class CheckoutServlet extends HttpServlet {
                         art.getBox().getPrezzo());
             }
 
-           
-         // 7. Svuota carrello lato DB e sessione
+            // 7. Svuota carrello lato DB e sessione
             Carrello carrelloDB = carrelloDAO.doRetrieveBySessionId(session.getId());
             if (carrelloDB != null) {
                 carrelloArticoloDAO.doDeleteAllByCarrelloId(carrelloDB.getId());
@@ -162,10 +171,6 @@ public class CheckoutServlet extends HttpServlet {
             session.removeAttribute("carrello");
             session.setAttribute("carrelloCount", 0);
             resp.sendRedirect(req.getContextPath() + "/jsp/confermaOrdine.jsp?id=" + ordineId);
-
-
-            
-
 
         } else {
             req.setAttribute("msgErr", "Errore nel salvataggio dell’ordine.");

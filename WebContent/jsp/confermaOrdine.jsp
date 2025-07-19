@@ -3,16 +3,17 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ include file="partials/header.jsp" %>
 
+<script>
+  document.body.classList.add('catalogo-moodbox-bg');
+</script>
+
 <!-- banner con card bianca -->
 <section class="confirm-page">
   <div class="confirm-box">
     <h2>Grazie per il tuo ordine!</h2>
 
     <p>
-      Il tuo ordine è stato registrato correttamente
-      <c:if test="${not empty param.id}">
-        (n° <strong>${param.id}</strong>)
-      </c:if>.
+      Il tuo ordine è stato registrato correttamente.
     </p>
 
     <!-- Riepilogo facoltativo -->

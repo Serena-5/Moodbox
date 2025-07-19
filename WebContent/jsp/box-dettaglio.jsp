@@ -2,7 +2,18 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="partials/header.jsp" %>
 
-<div class="container" style="max-width: 600px; margin:auto;">
+<div style="width:100%; display: flex; justify-content: flex-start; padding: 18px 0 0 32px;">
+    <a href="${pageContext.request.contextPath}/box" class="freccia-back">
+        <img src="${pageContext.request.contextPath}/images/freccia-indietro.svg" alt="Indietro"
+            style="width: 36px; height: 36px; cursor: pointer;">
+    </a>
+</div>
+
+<script>
+  document.body.classList.add('catalogo-moodbox-bg');
+</script>
+
+<div class="container" style="max-width: 600px; margin:auto; position: relative">
     <c:choose>
         <c:when test="${not empty box}">
             <h2><c:out value="${box.nome}" /></h2>
@@ -30,4 +41,3 @@
 <script src="${pageContext.request.contextPath}/scripts/cart.js"></script>
 
 <%@ include file="/jsp/partials/footer.jsp" %>
-
