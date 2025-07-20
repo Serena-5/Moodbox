@@ -54,6 +54,34 @@ public class BoxDAO {
         return null;
     }
 
+    public List<Box> doRetrieveByName(String search) {
+        List<Box> boxes = new ArrayList<>();
+        String sql = "SELECT * FROM boxes WHERE disponibile = 1 AND LOWER(nome) LIKE ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + search.toLowerCase() + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Box box = new Box();
+                box.setId(rs.getInt("id"));
+                box.setNome(rs.getString("nome"));
+                box.setDescrizione(rs.getString("descrizione"));
+                box.setPrezzo(rs.getBigDecimal("prezzo"));
+                box.setDisponibile(rs.getBoolean("disponibile"));
+                box.setImmagine(rs.getString("immagine"));
+                boxes.add(box);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return boxes;
+    }
+
+
     public List<Box> doRetrieveAll() {
         List<Box> lista = new ArrayList<>();
         String sql = "SELECT * FROM boxes";

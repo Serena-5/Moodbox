@@ -1,4 +1,3 @@
-// Servlet: BoxServlet.java
 package com.moodbox.servlet;
 
 import com.moodbox.DAO.BoxDAO;
@@ -13,9 +12,9 @@ import java.util.List;
 
 @WebServlet("/box/*")
 public class BoxServlet extends HttpServlet {
-    
-	private static final long serialVersionUID = 1L;
-	private BoxDAO boxDAO;
+
+    private static final long serialVersionUID = 1L;
+    private BoxDAO boxDAO;
 
     @Override
     public void init() throws ServletException {
@@ -29,7 +28,15 @@ public class BoxServlet extends HttpServlet {
         String pathInfo = request.getPathInfo();
 
         if (pathInfo == null || pathInfo.equals("/")) {
-            List<Box> boxList = boxDAO.doRetrieveAvailable();
+            // Gestione della ricerca per nome
+            String search = request.getParameter("search");
+            List<Box> boxList;
+            if (search != null && !search.trim().isEmpty()) {
+                boxList = boxDAO.doRetrieveByName(search);
+            } else {
+                boxList = boxDAO.doRetrieveAvailable();
+            }
+
             request.setAttribute("boxList", boxList);
             request.getRequestDispatcher("/jsp/box.jsp").forward(request, response);
 
@@ -46,6 +53,8 @@ public class BoxServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }

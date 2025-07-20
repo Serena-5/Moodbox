@@ -17,14 +17,30 @@
         <img src="${pageContext.request.contextPath}/images/logo.png" alt="MoodBox">
       </a>
 
-      
+      <div class="icon-wrapper" style="display: flex; align-items: center; gap: 16px;">
 
-      <div class="icon-wrapper">
+        <!-- Campo ricerca sempre visibile con lente -->
+	   	<form method="get" action="${pageContext.request.contextPath}/box"
+	      style="display: flex; align-items: center; gap: 6px; margin-top: 6px">
+	  	<img src="${pageContext.request.contextPath}/images/search-icon.svg"
+	       alt="Cerca"
+	       style="width: 24px; height: 24px; margin-bottom: 6px" />
+	
+	 	<input type="text"
+	         name="search"
+	         placeholder="Cerca"
+	         value="${param.search}"
+	         style="padding: 4px 8px; height: 28px; font-size: 14px;
+	                border-radius: 5px; border: 1px solid #ccc;" />
+		</form>
 
+
+        <!-- Admin -->
         <c:if test="${sessionScope.ruolo == 'admin'}">
           <a href="${pageContext.request.contextPath}/admin/catalogo" class="admin-link">Gestione catalogo</a>
         </c:if>
 
+        <!-- Utente -->
         <div class="user-dropdown">
           <img src="${pageContext.request.contextPath}/images/user.png"
                alt="Utente" class="user-icon" id="user-toggle">
@@ -46,6 +62,7 @@
           </div>
         </div>
 
+        <!-- Carrello -->
         <c:if test="${empty sessionScope.ruolo || sessionScope.ruolo ne 'admin'}">
           <a href="${pageContext.request.contextPath}/carrello" class="cart-btn">
             <img src="${pageContext.request.contextPath}/images/shopping-cart.svg" alt="Carrello" class="cart-icon" />
@@ -54,7 +71,6 @@
             </span>
           </a>
         </c:if>
-
       </div>
     </div>
   </header>
