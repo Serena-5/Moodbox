@@ -30,15 +30,17 @@
   </header>
 
   <!-- ===== HERO SECTION ===== -->
-  <section class="hero">
-    <div class="hero-left">
-      <div class="brand">
-        <img src="${pageContext.request.contextPath}/images/logo.png" alt="MoodBox">
-      </div>
-      <h1>Benvenuto in MoodBox</h1>
-      <p>Scopri la magia delle nostre box a tema: ogni scatola e' un viaggio sensoriale che trasforma il tuo umore in un'esperienza unica da vivere e condividere.</p>
-      <a href="${pageContext.request.contextPath}/box" class="cta">Scopri le box</a>
+<section class="hero">
+  <div class="hero-left">
+    <div class="brand">
+      <img src="${pageContext.request.contextPath}/images/logo.png" alt="MoodBox">
     </div>
-  </section>
+    <h1>Benvenuto in MoodBox</h1>
+    <p>Scopri la magia delle nostre box a tema: ogni scatola è un viaggio sensoriale che trasforma il tuo umore in un'esperienza unica da vivere e condividere.</p>
+    <a href="${pageContext.request.contextPath}/box" class="cta">Scopri le box</a>
+  </div>
+  <div class="hero-right"></div>
+</section>
+
 </body>
 </html>

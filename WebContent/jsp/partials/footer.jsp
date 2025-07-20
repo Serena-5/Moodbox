@@ -9,5 +9,9 @@
 <script src="${pageContext.request.contextPath}/scripts/cart.js"></script>
 <script src="${pageContext.request.contextPath}/scripts/checkout-validation.js"></script>
 
+<footer>
+  <p>&copy; 2025 MoodBox - Tutti i diritti riservati</p>
+</footer>
+
 </body>
 </html>
