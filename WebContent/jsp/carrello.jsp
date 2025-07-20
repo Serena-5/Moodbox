@@ -13,8 +13,17 @@
 
     <%-- ===== CARRELLO VUOTO ===== --%>
     <c:when test="${empty articoli}">
-      <p>Il carrello è vuoto.</p>
-      <a href="${pageContext.request.contextPath}/box">Vai al catalogo</a>
+     
+  <div class="empty-cart-fullscreen">
+  <img src="${pageContext.request.contextPath}/images/cart-vuoto.png" alt="Carrello vuoto">
+
+  <h3>Il tuo carrello è vuoto!</h3>
+  <p>Scopri le nostre MoodBox e trova quella perfetta per te.</p>
+  <a href="${pageContext.request.contextPath}/box" class="btn-primary">Vai al catalogo</a>
+</div>
+
+
+      
     </c:when>
 
     <%-- ===== CARRELLO CON PRODOTTI ===== --%>

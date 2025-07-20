@@ -237,6 +237,8 @@ footer {
   font-size:0.75rem;
 }
 
+
+
 @media (max-width:600px){
   .nav-links{
     gap:0.8rem;
@@ -277,13 +279,10 @@ footer {
 }
 
 .hero {
-  display: flex;
-  flex-wrap: wrap;
   min-height: 100vh;
-  overflow: hidden;
   position: relative;
+  display: flex;
 }
-
 
 .hero::after {
   content: "";
@@ -294,24 +293,23 @@ footer {
 }
 
 .hero-left {
-  flex: 1 1 500px;
-  min-width: 0;
+  position: relative;
+  z-index: 10;
+  max-width: 55%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 28px;
   padding: 120px 60px 60px;
   background: rgba(255, 255, 255, 0.92);
-  z-index: 1;
 }
-
 
 .brand img {
   max-width: 100%;
-  max-height: 120px;
   height: auto;
-  width: auto;
   object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
 .cta {
@@ -356,10 +354,16 @@ footer {
 }
 
 .nav a {
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
   font-weight: 600;
   transition: opacity 0.25s;
+}
+  
+@media (max-width: 900px) {
+  .nav a {
+    color: #126da6 !important;
+  }
 }
 
 .nav a:hover {
@@ -372,53 +376,58 @@ footer {
 
 .hamb {
   display: none;
-  width: 26px;
-  height: 2px;
-  background: #fff;
-  position: relative;
-  cursor: pointer;
-  transition: 0.3s;
 }
 
-.hamb::before,
-.hamb::after {
-  content: "";
-  position: absolute;
-  width: 26px;
-  height: 2px;
-  background: #fff;
-  transition: 0.3s;
+@media (max-width: 680px) {
+  .hamb {
+    display: block;
+    width: 26px;
+    height: 26px;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+    margin-top: 0px;
+  }
+
+  .hamb::before,
+  .hamb::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2.5px;
+    background: #126da6;
+    transition: 0.3s;
+  }
+
+  .hamb::before {
+    top: 6px;
+  }
+
+  .hamb::after {
+    bottom: 6px;
+  }
 }
 
-.hamb::before {
-  top: -8px;
-}
 
-.hamb::after {
-  top: 8px;
-}
+
 
 /* MEDIA QUERIES */
 @media (max-width: 900px) {
   .hero {
     flex-direction: column;
-    min-height: auto;
   }
 
   .hero-left {
     max-width: 100%;
-    width: 100%;
-    padding: 100px 28px 60px;
+    padding: 140px 28px 60px;
     align-items: center;
     text-align: center;
   }
-
-  .brand img {
-    height: 100px;
-    margin-bottom: 20px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+  
+   .brand img {
+    max-width: 80%;
+    height: auto;
   }
 
   .hero::after {
@@ -431,8 +440,8 @@ footer {
   .nav ul {
     position: fixed;
     inset: 0 0 0 auto;
-    width: 70%;
-    background: #0078d7;
+    width: 30%;
+    background: #ffffff;
     flex-direction: column;
     padding: 100px 32px;
     transform: translateX(100%);
@@ -667,8 +676,6 @@ html,body{
   background: rgba(255, 255, 255, 0.6);
 }
 
-
-
 .btn {
   margin-top: 28px;
   width: 100%;
@@ -814,10 +821,8 @@ input[type=password]{
   color: #333;
 }
 
-.confirm-box h2 {
-  color: #2e7d32;
-  margin-bottom: 14px;
-  font-weight: 700;
+.confirm-box h2{
+  color:  #6930c3;
 }
 
 
@@ -1033,9 +1038,7 @@ body.catalogo-moodbox-bg{
   background: #ede6fa !important;
 }
 
-.confirm-box h2{
-  color:  #6930c3;
-}
+
 .confirm-box .btn-row {
   text-align: center;
   margin-top: 30px;
@@ -1060,5 +1063,59 @@ body.catalogo-moodbox-bg{
 }
 
 .forgot-link {
-  color: #6930c3;  
+  color: #6930c3;
+  text-shadow: 1px 1px 4px #00000044;
+  text-decoration: underline;
+  font-weight: bold;
+  font-size: 17px;  
+  transition: color 0.2s, text-shadow 0.2s;
 }
+
+.empty-cart-fullscreen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #faf7ff;
+  padding: 2rem;
+}
+
+.empty-cart-fullscreen img {
+  max-width: 90vw;
+  max-height: 60vh;
+  height: auto;
+  width: auto;
+  margin-bottom: 1.5rem;
+  object-fit: contain;
+}
+
+
+.empty-cart-fullscreen h3 {
+  font-size: 1.8rem;
+  color: #126DA6;
+  margin-bottom: 0.5rem;
+}
+
+.empty-cart-fullscreen p {
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  color: #333;
+}
+
+.empty-cart-fullscreen .btn-primary {
+  padding: 12px 28px;
+  font-size: 1rem;
+  background: #0777D9;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.empty-cart-fullscreen .btn-primary:hover {
+  background: #1BA0F2;
+}
+

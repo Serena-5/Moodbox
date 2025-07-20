@@ -55,7 +55,7 @@
     <p>Riceverai una mail con i dettagli appena l’ordine sarà stato spedito.</p>
 
     <div class="btn-row">
-      <a href="${pageContext.request.contextPath}/home" class="button">Home</a>
+      <a href="${pageContext.request.contextPath}/box" class="button">Torna al catalogo</a>
     </div>
   </div>
 </section>
